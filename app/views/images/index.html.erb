@@ -18,8 +18,7 @@
     var next = $('#img2');
     next.hide();
 
-    var counter = 0;
-    next.attr("src", images[counter++]);
+    next.attr("src", images[getRandomInt(0, images.length)]);
     next.bind('load', fitImageToScreen);
 
     $(document).bind('keydown', changePicture);
@@ -41,7 +40,7 @@
         // reset dimensions
         next.css('width', 'auto');
         next.css('height', 'auto');
-        next.attr("src", images[counter++]);
+        next.attr("src", images[getRandomInt(0, images.length)]);
         next.bind('load', fitImageToScreen);
     }
 
@@ -58,6 +57,10 @@
                 viewer.height(maxHeight);
             }
         }
+    }
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
 </script>
