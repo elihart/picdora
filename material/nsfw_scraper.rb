@@ -5,46 +5,47 @@ require 'json'
 MIN_SCORE_REQUIRED = 100
 # Top posts of all time in r/nsfw, in in batches of 100
 URL = 'http://www.reddit.com/r/nsfw/top.json?sort=top&limit=100&t=all'
+SUBREDDITS = %w[grool blowjobs dirtysmall nsfw nsfw_gifs realgirls boobies lipsthatgrip asiannsfw amateur ass legalteens cumsluts nsfwhardcore blowjobs gonewild]
+TIME = %w[all month week day]
 
 def GetTopNSFW
+  counter = 0;
+  start = Time.now
   File.open('top_nsfw_imgur_links', 'w') do |f|
-    counter = 1
-    non_imgur = 0;
-    url = URL
-    after = ''
-    begin
-      # Get the first batch of links
-      result = GetRedditLinks(url)
-      links = result[:links]
-      after = result[:after]
+  # Go through each subreddit
+  SUBREDDITS.each do |subreddit|
+    # Go through each time option
+    TIME.each do |time|
+        after = ''
+        begin
+          # Get the first batch of links
+          result = GetRedditLinks(buildUrl(subreddit, time, after) )
+          links = result[:links]
+          after = result[:after]
 
-      # Process links
-      links.each do |link|
-        # If the score is too low we're done
-        if link[:score] < MIN_SCORE_REQUIRED
-          return
-        end
+          # Process links
+          links.each do |link|
+            # If the score is too low we're done
+            if link[:score] < MIN_SCORE_REQUIRED
+              break
+            end
 
-        # Write the link to file only if it is an imgur link
-        if (link[:url].match("imgur.com"))
-          f.puts(JSON.generate({:url => link[:url], :score => link[:score]}))
-          counter += 1
-        else
-          non_imgur += 1;
-        end
+            # Write the link to file only if it is an imgur link
+            if (link[:url].match("imgur.com"))
+              f.puts(JSON.generate({:url => link[:url], :score => link[:score], :subreddit => subreddit}))
+              counter += 1
+            end
 
+          end
+
+          # Must wait 2 seconds between each query
+          sleep 2
+
+        end while (after && !after.empty?)
       end
-
-      # Update the url to include the new 'after'
-      url = URL + "&after=#{after}"
-
-      # Must wait 2 seconds between each query
-      sleep 2
-
-    end while (after && !after.empty?)
-
-    puts "Recorded #{counter} imgur links out of #{counter + non_imgur} total links"
+    end
   end
+  puts "#{counter} images collected in #{Time.now - start} seconds"
 end
 
 
@@ -52,7 +53,6 @@ end
 def GetRedditLinks(url)
   # Initialize array to store links to return
   links = []
-
 
   # Run reddit query and parse into json object
   while true
@@ -76,8 +76,11 @@ def GetRedditLinks(url)
   end
 
   # Add 'After' attribute to return
-  return_value = {links: links, after: results["data"]["after"]}
-  return_value
+  {links: links, after: results["data"]["after"]}
+end
+
+def buildUrl(subreddit, time, after)
+  "http://www.reddit.com/r/#{subreddit}/top.json?sort=top&limit=100&t=#{time}&after=#{after}"
 end
 
 
