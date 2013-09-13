@@ -17,11 +17,12 @@
     var viewer = $('#img1');
     var next = $('#img2');
     next.hide();
+    viewer.hide();
 
     next.attr("src", images[getRandomInt(0, images.length)]);
     next.bind('load', fitImageToScreen);
 
-    $(document).bind('keydown', changePicture);
+    $(document).bind('keydown touchend', changePicture);
 
     var first = true;
     function changePicture(event) {
