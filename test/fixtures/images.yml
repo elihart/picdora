@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  url: MyString
+  reddit_score: 1
+  likes: 1
+  dislikes: 1
+  reported: false
+
+two:
+  url: MyString
+  reddit_score: 1
+  likes: 1
+  dislikes: 1
+  reported: false

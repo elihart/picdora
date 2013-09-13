@@ -1,0 +1,64 @@
+<%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js" %>
+
+<h1 id="title">Picdora</h1>
+<p id="instructions">Instructions: Press any key to change pictures</p>
+<img src="" id="img1">
+<img src="" id="img2">
+
+
+
+
+<script>
+    var images = [];
+    <% @images.each do |image| %>
+    images.push('<%=image%>');
+    <%end%>
+
+    var viewer = $('#img1');
+    var next = $('#img2');
+    next.hide();
+
+    var counter = 0;
+    next.attr("src", images[counter++]);
+    next.bind('load', fitImageToScreen);
+
+    $(document).bind('keydown', changePicture);
+
+    var first = true;
+    function changePicture(event) {
+        if(first){
+            first = false;
+            $("#title, #instructions").hide();
+        }
+        var temp = viewer;
+        viewer = next;
+        next = temp;
+
+        next.hide();
+        viewer.show();
+
+
+        // reset dimensions
+        next.css('width', 'auto');
+        next.css('height', 'auto');
+        next.attr("src", images[counter++]);
+        next.bind('load', fitImageToScreen);
+    }
+
+    function fitImageToScreen() {
+        var maxWidth = window.innerWidth;
+        var maxHeight = window.innerHeight;
+
+        console.log(viewer.width() + " " + viewer.height());
+
+        if (viewer.width() > maxWidth || viewer.height() > maxHeight) {
+            if (viewer.width() > viewer.height()) {
+                viewer.width(maxWidth);
+            } else {
+                viewer.height(maxHeight);
+            }
+        }
+    }
+
+</script>
+

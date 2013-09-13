@@ -1,0 +1,13 @@
+require 'open-uri'
+require 'cgi'
+require 'json'
+
+MIN_SCORE_REQUIRED = 100
+# Top posts of all time in r/nsfw, in in batches of 100
+URL = 'http://www.reddit.com/r/nsfw/top.json?sort=top&limit=1&t=all'
+
+File.open('top_nsfw_imgur_links', 'w') do |f|
+
+	result = JSON.parse(open(URL).read)
+	puts result
+end
