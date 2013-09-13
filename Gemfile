@@ -7,6 +7,7 @@ gem 'rails', '4.0.0'
 #gem 'sqlite3'
 gem 'pg'
 gem 'rails_12factor', group: :production
+ruby '2.0.0'
 
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
