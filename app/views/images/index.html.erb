@@ -2,8 +2,7 @@
 
 <h1 id="title">Picdora</h1>
 <p id="instructions">Instructions: Press any key to change pictures</p>
-<img src="" id="img1">
-<img src="" id="img2">
+
 
 
 
@@ -14,75 +13,24 @@
     images.push('<%=image%>');
     <%end%>
 
-    var viewer = $('#img1');
-    var next = $('#img2');
-    next.hide();
-    viewer.hide();
-
-    next.bind('load', fitImageToScreen);
-    viewer.bind('load', fitImageToScreen);
-    next.attr("src", images[getRandomInt(0, images.length)]);
-
-    var maxWidth = window.innerWidth;
-    var maxHeight = window.innerHeight;
-
-
+    var loader = new ImageLoader(images);
 
     $(document).bind('keydown touchend', changePicture);
 
     var first = true;
+    var image = loader.nextImage();
     function changePicture(event) {
 
         if (first) {
             first = false;
             $("#title, #instructions").hide();
         }
-        var temp = viewer;
-        viewer = next;
-        next = temp;
-
-        next.fadeOut(2, function(){
-            viewer.fadeIn();
-        });
-
-        //viewer.hide();
-        //next.show();
+        // remove old image
+        image.remove();
 
 
-
-        // reset dimensions
-        next.css('width', 'auto');
-        next.css('height', 'auto');
-        next.attr("src", images[getRandomInt(0, images.length)]);
+        image = loader.nextImage();
+        $(document.body).append(image);
     }
-
-    function fitImageToScreen() {
-        //console.log("Resizing...");
-        //console.log("Before: " + next.width() + "x" + next.height());
-
-        // resize picture to fit screen
-        if (next.width() > maxWidth) {
-            next.css('height', 'auto');
-            next.width(maxWidth);
-        }
-
-        if (next.height() > maxHeight) {
-            next.css('width', 'auto');
-            next.height(maxHeight);
-        }
-
-        //console.log("After: " + next.width() + "x" + next.height());
-
-        // center image
-        var left = (maxWidth - next.width()) / 2;
-        var top = (maxHeight - next.height()) / 2;
-        next.css({left: left, top: top});
-
-    }
-
-    function getRandomInt(min, max) {
-        return Math.floor(Math.random() * (max - min + 1) + min);
-    }
-
 </script>
 

@@ -1,6 +1,6 @@
 class ImagesController < ApplicationController
   def index
-    all_images = Image.all
+    all_images = Image.where(subreddit: :earthporn)
     @images = []
     all_images.each do |image|
       image.url.chomp!(".jpg")

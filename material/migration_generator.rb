@@ -12,7 +12,7 @@ File.open('image_migration.rb', 'w') do |migration|
 
   
   # Parse each file name and add it to the migration
-  File.open('top_nsfw_imgur_links', 'r') do |file|
+  File.open('top_earth', 'r') do |file|
     while (line = file.gets)
         url_object = JSON.parse(line)
 	url = url_object["url"]
