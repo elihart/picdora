@@ -14,23 +14,19 @@
     <%end%>
 
     var loader = new ImageLoader(images);
+    var displayer = new ImageDisplayer();
 
     $(document).bind('keydown touchend', changePicture);
 
     var first = true;
-    var image = loader.nextImage();
     function changePicture(event) {
 
         if (first) {
             first = false;
             $("#title, #instructions").hide();
         }
-        // remove old image
-        image.remove();
 
-
-        image = loader.nextImage();
-        $(document.body).append(image);
+        displayer.setImage(loader.nextImage());
     }
 </script>
 
