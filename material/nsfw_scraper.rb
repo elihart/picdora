@@ -3,15 +3,15 @@ require 'cgi'
 require 'json'
 
 MIN_SCORE_REQUIRED = 100
-# Top posts of all time in r/nsfw, in in batches of 100
-URL = 'http://www.reddit.com/r/nsfw/top.json?sort=top&limit=100&t=all'
-SUBREDDITS = %w[grool blowjobs dirtysmall nsfw nsfw_gifs realgirls boobies lipsthatgrip asiannsfw amateur ass legalteens cumsluts nsfwhardcore blowjobs gonewild]
-TIME = %w[all month week day]
+
+#SUBREDDITS = %w[grool blowjobs dirtysmall nsfw nsfw_gifs realgirls boobies lipsthatgrip asiannsfw amateur ass legalteens cumsluts nsfwhardcore blowjobs gonewild]
+SUBREDDITS = %w[earthporn]
+TIME = %w[all]
 
 def GetTopNSFW
   counter = 0;
   start = Time.now
-  File.open('top_nsfw_imgur_links', 'w') do |f|
+  File.open('top_earth', 'w') do |f|
   # Go through each subreddit
   SUBREDDITS.each do |subreddit|
     # Go through each time option
