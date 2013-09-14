@@ -1,7 +1,7 @@
 require 'json'
 
 # Create migration file
-File.open('add_images.rb', 'w') do |migration|
+File.open('../db/migrate/20130913003438_add_images.rb', 'w') do |migration|
   # Add migration info to top of file
   migration.puts <<-START_CODE
     class AddImages < ActiveRecord::Migration
@@ -10,7 +10,7 @@ File.open('add_images.rb', 'w') do |migration|
 
 
   # Parse each file name and add it to the migration
-  File.open('top_earth', 'r') do |file|
+  File.open('top_links', 'r') do |file|
     while (line = file.gets)
       url_object = JSON.parse(line)
       url = url_object["url"]
