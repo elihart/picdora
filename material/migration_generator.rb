@@ -3,8 +3,12 @@ require 'json'
 # Create migration file
 File.open('image_migration.rb', 'w') do |migration|
   # Add migration info to top of file
-  migration.puts("class AddSongs < ActiveRecord::Migration")
-  migration.puts("def change")
+  migration.puts <<-START_CODE
+    class AddSongs < ActiveRecord::Migration
+      def change
+        counter = 0
+        dup_counter = 0
+  START_CODE
 
   
   # Parse each file name and add it to the migration
@@ -15,11 +19,21 @@ File.open('image_migration.rb', 'w') do |migration|
 	score = url_object["score"]
         subreddit = url_object["subreddit"]
         # Add line to migration
-    	migration.puts("Image.create(url: '#{url}', reddit_score: #{score}, subreddit: #{subreddit})")
+    	migration.puts <<-MIGRATE_CODE
+        begin
+          Image.create!(url: '#{url}', reddit_score: #{score}, subreddit: '#{subreddit}')
+          counter += 1
+        rescue
+          dup_counter += 1
+        end
+      MIGRATE_CODE
     end    
   end
 
   # Add end tags
-  migration.puts("end")
-  migration.puts("end")
+  migration.puts <<-END_CODE
+    puts "Links added: \#{counter}  Duplicate links: \#{dup_counter}"
+    end
+    end
+  END_CODE
 end

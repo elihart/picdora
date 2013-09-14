@@ -19,14 +19,20 @@
     next.hide();
     viewer.hide();
 
-    next.attr("src", images[getRandomInt(0, images.length)]);
     next.bind('load', fitImageToScreen);
+    viewer.bind('load', fitImageToScreen);
+    next.attr("src", images[getRandomInt(0, images.length)]);
+
+    var maxWidth = window.innerWidth;
+    var maxHeight = window.innerHeight;
+
+
 
     $(document).bind('keydown touchend', changePicture);
 
     var first = true;
     function changePicture(event) {
-        if(first){
+        if (first) {
             first = false;
             $("#title, #instructions").hide();
         }
@@ -34,30 +40,39 @@
         viewer = next;
         next = temp;
 
-        next.hide();
-        viewer.show();
+        next.fadeOut();
+        viewer.fadeIn();
 
 
         // reset dimensions
         next.css('width', 'auto');
         next.css('height', 'auto');
         next.attr("src", images[getRandomInt(0, images.length)]);
-        next.bind('load', fitImageToScreen);
     }
 
     function fitImageToScreen() {
-        var maxWidth = window.innerWidth;
-        var maxHeight = window.innerHeight;
+        //console.log("Resizing...");
+        //console.log("Before: " + next.width() + "x" + next.height());
 
-        console.log(viewer.width() + " " + viewer.height());
-
-        if (viewer.width() > maxWidth || viewer.height() > maxHeight) {
-            if (viewer.width() > viewer.height()) {
-                viewer.width(maxWidth);
-            } else {
-                viewer.height(maxHeight);
-            }
+        // resize picture to fit screen
+        if (next.width() > maxWidth) {
+            next.css('height', 'auto');
+            next.width(maxWidth);
         }
+
+        if (next.height() > maxHeight) {
+            next.css('width', 'auto');
+            next.height(maxHeight);
+        }
+
+        //console.log("After: " + next.width() + "x" + next.height());
+
+        // center image
+        var left = (maxWidth - next.width()) / 2;
+        var top = (maxHeight - next.height()) / 2;
+        next.css({left: left, top: top});
+
+       //console.log("done loading");
     }
 
     function getRandomInt(min, max) {

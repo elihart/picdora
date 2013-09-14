@@ -14,10 +14,4 @@ test:
   username: eli
   password:
 
-production:
-  adapter: postgresql
-  encoding: unicode
-  database: picdora_production
-  pool: 5
-  username: eli
-  password:
+

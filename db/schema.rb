@@ -16,6 +16,7 @@ ActiveRecord::Schema.define(version: 20130913003438) do
   create_table "images", force: true do |t|
     t.string   "url"
     t.integer  "reddit_score"
+    t.string   "subreddit"
     t.integer  "likes"
     t.integer  "dislikes"
     t.boolean  "reported"
