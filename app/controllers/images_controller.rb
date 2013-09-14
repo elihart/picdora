@@ -1,6 +1,10 @@
 class ImagesController < ApplicationController
   def index
-    all_images = Image.where(subreddit: :earthporn)
+    nsfw = !!params[:nsfw]
+    gif = params[:gif]
+    subreddit = params[:subreddit] || 'earthporn'
+
+    all_images = Image.where(subreddit: subreddit)
     @images = []
     all_images.each do |image|
       image.url.chomp!(".jpg")

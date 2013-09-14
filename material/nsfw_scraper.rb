@@ -13,7 +13,7 @@ SUBREDDITS = %w[grool blowjobs dirtysmall nsfw nsfw_gifs realgirls boobies lipst
                 bustypetite hotchickswithtattoos onoff asianhotties curvy asstastic
                 asiansgonewild hentai gwcouples tinytits girlsfinishingthejob stacked
                 tightdresses camwhores nsfwfunny celebnsfw anal]
-TIME = %w[all month week day]
+TIME = %w[all month week]
 
 def GetTopNSFW
   counter = 0;
@@ -34,7 +34,7 @@ def GetTopNSFW
           # Process links
           links.each do |link|
             # If the score is too low we're done
-            if link[:score] < MIN_SCORE_REQUIRED
+            if (link[:score] < MIN_SCORE_REQUIRED)
               break
             end
 
@@ -80,9 +80,10 @@ def GetRedditLinks(url)
     score = result["data"]["score"]
     url = result["data"]["url"]
     nsfw = result["data"]["over_18"]
+    gif = (url =~ /\.gif$/)
 
     # Add to links array
-    links.push({url: url, score: score, nsfw: nsfw})
+    links.push({url: url, score: score, nsfw: nsfw, gif: gif})
   end
 
   # Add 'After' attribute to return

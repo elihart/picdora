@@ -8,6 +8,7 @@ class CreateImages < ActiveRecord::Migration
       t.integer :dislikes
       t.boolean :reported
       t.boolean :nsfw
+      t.boolean :gif
 
       t.timestamps
     end

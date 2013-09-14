@@ -1,10 +1,10 @@
 require 'json'
 
 # Create migration file
-File.open('image_migration.rb', 'w') do |migration|
+File.open('add_images.rb', 'w') do |migration|
   # Add migration info to top of file
   migration.puts <<-START_CODE
-    class AddSongs < ActiveRecord::Migration
+    class AddImages < ActiveRecord::Migration
       def change
   START_CODE
 
@@ -17,10 +17,11 @@ File.open('image_migration.rb', 'w') do |migration|
       score = url_object["score"]
       subreddit = url_object["subreddit"]
       nsfw = url_object["nsfw"]
+      gif = url_object["gif"]
 
       # Add line to migration
       migration.puts <<-MIGRATE_CODE
-          Image.create(url: '#{url}', reddit_score: #{score}, subreddit: '#{subreddit}', nsfw: #{nsfw})
+          Image.create(url: '#{url}', reddit_score: #{score}, subreddit: '#{subreddit}', nsfw: #{nsfw}, gif: #{gif})
       MIGRATE_CODE
     end
   end
