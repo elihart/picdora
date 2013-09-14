@@ -29,8 +29,7 @@ function getRandomInt(min, max) {
 
 function ImageDisplayer() {
     var activeImage;
-    var maxWidth = window.innerWidth;
-    var maxHeight = window.innerHeight;
+
 
     this.setImage = function (image) {
         // Remove old image
@@ -49,6 +48,9 @@ function ImageDisplayer() {
     };
 
     function fitImageToScreen(image) {
+        var maxWidth = window.innerWidth;
+        var maxHeight = window.innerHeight;
+
         // resize picture to fit screen
         if (image.width() > maxWidth) {
             image.css('height', 'auto');
