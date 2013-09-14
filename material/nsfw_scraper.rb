@@ -4,17 +4,25 @@ require 'json'
 
 MIN_SCORE_REQUIRED = 100
 
-#SUBREDDITS = %w[grool blowjobs dirtysmall nsfw nsfw_gifs realgirls boobies lipsthatgrip asiannsfw amateur ass legalteens cumsluts nsfwhardcore blowjobs gonewild]
-SUBREDDITS = %w[earthporn]
-TIME = %w[all]
+SUBREDDITS = %w[grool blowjobs dirtysmall nsfw nsfw_gifs realgirls boobies lipsthatgrip asiannsfw
+                amateur ass legalteens cumsluts nsfwhardcore blowjobs gonewild
+                earthporn pics funny WTF aww gifs cringepics trees
+                reactiongifs gentlemanboners cats woahdude foodporn
+                fiftyfifty food wallpapers cosplaygirls ImGoingToHellForThis
+                realgirls morbidreality rule34 milf girlsinyogapants
+                bustypetite hotchickswithtattoos onoff asianhotties curvy asstastic
+                asiansgonewild hentai gwcouples tinytits girlsfinishingthejob stacked
+                tightdresses camwhores nsfwfunny celebnsfw anal]
+TIME = %w[all month week day]
 
 def GetTopNSFW
   counter = 0;
   start = Time.now
-  File.open('top_earth', 'w') do |f|
+  File.open('top_links', 'w') do |f|
   # Go through each subreddit
   SUBREDDITS.each do |subreddit|
     # Go through each time option
+    all_links = []
     TIME.each do |time|
         after = ''
         begin
@@ -30,10 +38,11 @@ def GetTopNSFW
               break
             end
 
-            # Write the link to file only if it is an imgur link
-            if (link[:url].match("imgur.com"))
-              f.puts(JSON.generate({:url => link[:url], :score => link[:score], :subreddit => subreddit}))
+            # Write the link to file only if it is an imgur link and we haven't seen it yet
+            if (link[:url].match("imgur.com") && !all_links.index(link[:url]))
+              f.puts(JSON.generate({url: link[:url], score: link[:score], subreddit: subreddit, nsfw: link[:nsfw]}))
               counter += 1
+              all_links.push(link[:url])
             end
 
           end
@@ -70,9 +79,10 @@ def GetRedditLinks(url)
     # Get post data
     score = result["data"]["score"]
     url = result["data"]["url"]
+    nsfw = result["data"]["over_18"]
 
     # Add to links array
-    links.push({url: url, score: score})
+    links.push({url: url, score: score, nsfw: nsfw})
   end
 
   # Add 'After' attribute to return
