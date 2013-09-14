@@ -40,7 +40,7 @@ def GetTopNSFW
 
             # Write the link to file only if it is an imgur link and we haven't seen it yet
             if (link[:url].match("imgur.com") && !all_links.index(link[:url]))
-              f.puts(JSON.generate({url: link[:url], score: link[:score], subreddit: subreddit, nsfw: link[:nsfw]}))
+              f.puts(JSON.generate({url: link[:url], score: link[:score], subreddit: subreddit, nsfw: link[:nsfw], gif: link[:gif]}))
               counter += 1
               all_links.push(link[:url])
             end
@@ -80,7 +80,7 @@ def GetRedditLinks(url)
     score = result["data"]["score"]
     url = result["data"]["url"]
     nsfw = result["data"]["over_18"]
-    gif = (url =~ /\.gif$/)
+    gif = !!url.index(".gif")
 
     # Add to links array
     links.push({url: url, score: score, nsfw: nsfw, gif: gif})
