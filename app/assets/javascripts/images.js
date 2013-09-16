@@ -27,22 +27,23 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function ImageDisplayer() {
+function ImageDisplayer(view) {
     var activeImage;
-
+    var view = view;
 
     this.setImage = function (image) {
         // Remove old image
-        if(activeImage){
-            activeImage.fadeOut(function(){
+        if (activeImage) {
+            activeImage.fadeOut(function () {
                 this.remove();
             });
         }
-            activeImage = image;
-            activeImage.appendTo($('body'));
-            fitImageToScreen(image);
-            activeImage.hide();
-            activeImage.fadeIn();
+        activeImage = image;
+        activeImage.appendTo(view);
+        fitImageToScreen(image);
+        activeImage.hide();
+        activeImage.fadeIn();
+
 
 
     };
@@ -51,15 +52,22 @@ function ImageDisplayer() {
         var maxWidth = window.innerWidth;
         var maxHeight = window.innerHeight;
 
+        var windowAspectRatio = maxWidth / maxHeight;
+        var imageAspectRatio = image.width() / image.height();
+
         // resize picture to fit screen
-        if (image.width() > maxWidth) {
-            image.css('height', 'auto');
-            image.width(maxWidth);
+        if (imageAspectRatio > windowAspectRatio && image.width() > maxWidth) {
+            image.css({
+                width: '100%',
+                height: 'auto'
+            });
         }
 
-        else if (image.height() > maxHeight) {
-            image.css('width', 'auto');
-            image.height(maxHeight);
+        else if (imageAspectRatio < windowAspectRatio && image.height() > maxHeight) {
+            image.css({
+                height: '100%',
+                width: 'auto'
+            });
         }
 
         // center image
