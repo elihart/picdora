@@ -21,11 +21,9 @@
     var view = $('#viewer');
     var displayer = new ImageDisplayer(view, isMobile);
 
-    //$(document).bind('keydown touchend', changePicture);
+    $(document).bind('keydown touchend', changePicture);
 
-    //$(document).bind('resize orientationchange', displayer.redraw);
     $(window).bind('orientationchange resize', function(){
-        alert('hi');
         displayer.redraw();
     });
 
