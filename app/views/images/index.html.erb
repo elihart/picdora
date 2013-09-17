@@ -26,7 +26,7 @@
     //$(document).bind('keydown touchend', changePicture);
 
     //$(document).bind('resize orientationchange', displayer.redraw);
-    $(document).bind('orientationchange', function(){
+    $(document).bind('orientationchange resize', function(){
         alert('hi');
         $('#width').html(window.innerWidth);
         $('#height').html(window.innerHeight);
