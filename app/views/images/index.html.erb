@@ -1,6 +1,8 @@
 <h1 id="title">Picdora</h1>
 <p id="instructions">Instructions: Press any key to change pictures</p>
 <div id="viewer"></div>
+<h2 id="width"></h2>
+<h2 id="height"></h2>
 
 
 
@@ -21,9 +23,13 @@
 
 
 
-    $(document).bind('keydown touchend', changePicture);
+    //$(document).bind('keydown touchend', changePicture);
 
-    $(document).bind('resize orientationchange', displayer.redraw);
+    //$(document).bind('resize orientationchange', displayer.redraw);
+    $(document).bind('orientationchange', function(){
+        $('#width').html(window.innerWidth);
+        $('#height').html(window.innerHeight);
+    });
 
     var first = true;
     function changePicture(event) {
