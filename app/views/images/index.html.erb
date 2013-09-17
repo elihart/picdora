@@ -12,9 +12,13 @@
     images.push('<%=image%>');
     <%end%>
 
-    var view = $('#viewer');
+
     var loader = new ImageLoader(images);
-    var displayer = new ImageDisplayer(view);
+
+    var isMobile = jQuery.browser.mobile;
+    var view = $('#viewer');
+    var displayer = new ImageDisplayer(view, isMobile);
+
 
 
     $(document).bind('keydown touchend', changePicture);

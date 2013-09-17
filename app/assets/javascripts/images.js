@@ -27,9 +27,10 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function ImageDisplayer(view) {
+function ImageDisplayer(view, mobile) {
     var activeImage;
     var view = view;
+    var mobile = mobile;
 
     this.setImage = function (image) {
         // Remove old image
@@ -55,25 +56,49 @@ function ImageDisplayer(view) {
         var windowAspectRatio = maxWidth / maxHeight;
         var imageAspectRatio = image.width() / image.height();
 
-        // resize picture to fit screen
-        if (imageAspectRatio > windowAspectRatio && image.width() > maxWidth) {
-            image.css({
-                width: '100%',
-                height: 'auto'
-            });
+        if(mobile){
+            // Stretch image to take up full screen space on mobile
+
+            if (imageAspectRatio > windowAspectRatio) {
+                image.css({
+                    width: '100%',
+                    height: 'auto'
+                });
+            }
+
+            else if (imageAspectRatio < windowAspectRatio) {
+                image.css({
+                    height: '100%',
+                    width: 'auto'
+                });
+            }
+
+            // center image
+            var left = (maxWidth - image.width()) / 2;
+            var top = (maxHeight - image.height()) / 2;
+            image.css({left: left, top: top});
+        } else {
+            // resize picture to fit screen
+            if (imageAspectRatio > windowAspectRatio && image.width() > maxWidth) {
+                image.css({
+                    width: '100%',
+                    height: 'auto'
+                });
+            }
+
+            else if (imageAspectRatio < windowAspectRatio && image.height() > maxHeight) {
+                image.css({
+                    height: '100%',
+                    width: 'auto'
+                });
+            }
+
+            // center image
+            var left = (maxWidth - image.width()) / 2;
+            var top = (maxHeight - image.height()) / 2;
+            image.css({left: left, top: top});
         }
 
-        else if (imageAspectRatio < windowAspectRatio && image.height() > maxHeight) {
-            image.css({
-                height: '100%',
-                width: 'auto'
-            });
-        }
-
-        // center image
-        var left = (maxWidth - image.width()) / 2;
-        var top = (maxHeight - image.height()) / 2;
-        image.css({left: left, top: top});
     }
 
     // Called when the screen size or orientation changes
