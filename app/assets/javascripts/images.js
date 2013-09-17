@@ -44,7 +44,7 @@ function ImageDisplayer(view, mobile, recycleFunction) {
         if (activeImage) {
             activeImage.fadeOut(function () {
                 $(this).remove();
-                //recycleFunction(this);
+                recycleFunction($(this));
             });
         }
         activeImage = image;
