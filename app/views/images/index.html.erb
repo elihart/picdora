@@ -19,16 +19,21 @@
     var view = $('#viewer');
     var displayer = new ImageDisplayer(view, isMobile);
 
-    $(document).bind('keydown touchend', changePicture);
+    $(document).bind('keydown touchend', keyPressed);
 
     $(window).bind('orientationchange resize', function(){
         displayer.redraw();
     });
 
+    function keyPressed(event){
+        changePicture();
+    }
+
     var first = true;
-    function changePicture(event) {
+    function changePicture() {
 
         if (first) {
+            window.scrollTo(0, 1);
             first = false;
             $("#title, #instructions").hide();
             view.fullScreen();
