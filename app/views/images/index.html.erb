@@ -33,6 +33,25 @@
             $("#title, #instructions").hide();
             view.fullScreen();
             $('body').css('background-color', 'black');
+            $('html').css({cursor: 'none'});
+
+            // setup cursor hiding
+            var j, justHidden;
+            $(document).bind('mousemove', function() {
+                if (!justHidden) {
+                    justHidden = false;
+                    clearTimeout(j);
+                    $('html').css({cursor: 'default'});
+                    j = setTimeout(hide, 1000);
+                }
+            });
+            function hide() {
+                $('html').css({cursor: 'none'});
+                justHidden = true;
+                setTimeout(function() {
+                    justHidden = false;
+                }, 500);
+            }
         }
 
         displayer.setImage(loader.nextImage());

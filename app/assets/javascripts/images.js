@@ -46,7 +46,6 @@ function ImageDisplayer(view, mobile) {
         activeImage.fadeIn();
 
 
-
     };
 
     function fitImageToScreen(image) {
@@ -56,21 +55,44 @@ function ImageDisplayer(view, mobile) {
         var windowAspectRatio = maxWidth / maxHeight;
         var imageAspectRatio = image.width() / image.height();
 
-        if(mobile){
+        if (mobile) {
             // Stretch image to take up full screen space on mobile
 
             if (imageAspectRatio > windowAspectRatio) {
-                image.css({
-                    width: '100%',
-                    height: 'auto'
-                });
+                switch (window.orientation) {
+                    case -90:
+                    case 90:
+                        image.css({
+                            height: '100%',
+                            width: 'auto'
+                        });
+                        break;
+                    default:
+                        image.css({
+                            width: '100%',
+                            height: 'auto'
+                        });
+                        break;
+                }
+
             }
 
             else if (imageAspectRatio < windowAspectRatio) {
-                image.css({
-                    height: '100%',
-                    width: 'auto'
-                });
+                switch (window.orientation) {
+                    case -90:
+                    case 90:
+                        image.css({
+                            width: '100%',
+                            height: 'auto'
+                        });
+                        break;
+                    default:
+                        image.css({
+                            height: '100%',
+                            width: 'auto'
+                        });
+                        break;
+                }
             }
 
             // center image
@@ -102,8 +124,8 @@ function ImageDisplayer(view, mobile) {
     }
 
     // Called when the screen size or orientation changes
-    this.redraw = function(){
-        if(activeImage){
+    this.redraw = function () {
+        if (activeImage) {
             fitImageToScreen(activeImage);
         }
     }
