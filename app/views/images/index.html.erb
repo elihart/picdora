@@ -60,6 +60,11 @@
                     justHidden = false;
                 }, 500);
             }
+
+            // start automatically changing
+            setInterval(function() {
+                changePicture();
+            }, 3000);
         }
 
         displayer.setImage(loader.nextImage());
