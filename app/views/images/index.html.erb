@@ -21,22 +21,12 @@
     var view = $('#viewer');
     var displayer = new ImageDisplayer(view, isMobile);
 
-    var supportsOrientationChange = "onorientationchange" in window,
-            orientationEvent = supportsOrientationChange ? "orientationchange" : "resize";
-
-    window.addEventListener(orientationEvent, function() {
-        alert('HOLY ROTATING SCREENS BATMAN:' + window.orientation + " " + screen.width + "x" + screen.height);
-    }, false);
-
-
-
     //$(document).bind('keydown touchend', changePicture);
 
     //$(document).bind('resize orientationchange', displayer.redraw);
-    $(document).bind('orientationchange resize', function(){
+    $(window).bind('orientationchange resize', function(){
         alert('hi');
-        $('#width').html(window.innerWidth);
-        $('#height').html(window.innerHeight);
+        displayer.redraw();
     });
 
     var first = true;
