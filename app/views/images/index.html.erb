@@ -17,7 +17,7 @@
 
     var isMobile = jQuery.browser.mobile;
     var view = $('#viewer');
-    var displayer = new ImageDisplayer(view, isMobile);
+    var displayer = new ImageDisplayer(view, isMobile, recycleImg);
 
     $(document).bind('keydown touchend', keyPressed);
 
@@ -29,11 +29,14 @@
         changePicture();
     }
 
+    function recycleImg(image){
+        loader.useImage(image);
+    }
+
     var first = true;
     function changePicture() {
 
         if (first) {
-            window.scrollTo(0, 1);
             first = false;
             $("#title, #instructions").hide();
             view.fullScreen();

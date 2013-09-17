@@ -3,6 +3,7 @@ function ImageLoader(image_array) {
 
     var QUEUE_SIZE = 5;
     var queue = [];
+    var availableImages = [];
 
     // Start loading queue
     for (var i = 0; i < QUEUE_SIZE; i++) {
@@ -10,7 +11,7 @@ function ImageLoader(image_array) {
     }
 
     function enqueueImage() {
-        var img = $('<img/>');
+        var img = availableImages.length ? availableImages.shift() : $('<img/>');
         var url = images[getRandomInt(0, images.length)];
         img.attr("src", url);
 
@@ -19,24 +20,31 @@ function ImageLoader(image_array) {
 
     this.nextImage = function () {
         enqueueImage();
+        console.log("next");
         return queue.shift();
     };
+
+    this.useImage = function(image){
+        availableImages.push(image);
+    }
 }
 
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-function ImageDisplayer(view, mobile) {
+function ImageDisplayer(view, mobile, recycleFunction) {
     var activeImage;
     var view = view;
     var mobile = mobile;
+    var recycleFunction = recycleFunction;
 
     this.setImage = function (image) {
         // Remove old image
         if (activeImage) {
             activeImage.fadeOut(function () {
-                this.remove();
+                $(this).remove();
+                //recycleFunction(this);
             });
         }
         activeImage = image;
