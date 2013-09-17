@@ -1,7 +1,7 @@
 function ImageLoader(image_array) {
     var images = image_array;
 
-    var QUEUE_SIZE = 10;
+    var QUEUE_SIZE = 5;
     var queue = [];
 
     // Start loading queue
