@@ -19,6 +19,8 @@
 
     $(document).bind('keydown touchend', changePicture);
 
+    $(document).bind('resize orientationchange', displayer.redraw);
+
     var first = true;
     function changePicture(event) {
 

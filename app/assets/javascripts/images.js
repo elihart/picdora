@@ -75,4 +75,11 @@ function ImageDisplayer(view) {
         var top = (maxHeight - image.height()) / 2;
         image.css({left: left, top: top});
     }
+
+    // Called when the screen size or orientation changes
+    this.redraw = function(){
+        if(activeImage){
+            fitImageToScreen(activeImage);
+        }
+    }
 }
