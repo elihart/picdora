@@ -21,6 +21,10 @@
     var view = $('#viewer');
     var displayer = new ImageDisplayer(view, isMobile);
 
+    window.addEventListener('orientationEvent', function() {
+        alert('HOLY ROTATING SCREENS BATMAN:' + window.orientation + " " + screen.width + " " + screen.height);
+    }, false);
+
 
 
     //$(document).bind('keydown touchend', changePicture);
