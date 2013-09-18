@@ -1,10 +1,10 @@
 require 'json'
 
 # Create migration file
-File.open('../db/migrate/20130913003438_add_images.rb', 'w') do |migration|
+File.open("../db/migrate/#{Time.now.utc.to_s.chomp!("UTC").gsub(/[-: ]/, '') }_add_images#{Time.now.to_i}.rb", 'w') do |migration|
   # Add migration info to top of file
   migration.puts <<-START_CODE
-    class AddImages < ActiveRecord::Migration
+    class AddImages#{Time.now.to_i} < ActiveRecord::Migration
       def change
   START_CODE
 

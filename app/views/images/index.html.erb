@@ -1,5 +1,13 @@
 <h1 id="title">Picdora</h1>
 <p id="instructions">Instructions: Press any key to change pictures</p>
+<div id="options">
+  <%@subreddits.each do |subreddit|%>
+      <input type="checkbox" id="<%=subreddit%>" /><label for="<%=subreddit%>"><%=subreddit%></label>
+  <%end%>
+</div>
+
+<input type="submit" id="start" value="Start"/>
+
 <div id="viewer"></div>
 
 
@@ -7,6 +15,21 @@
 
 
 <script>
+  // style check boxes
+  $(function() {
+      $(':input').button();
+
+      $('#start').click(start);
+  });
+
+  function start() {
+      console.log("clicked");
+      var subreddits = [];
+      $('input:checked').each(function() {
+          subreddits.push($(this).attr('id'));
+      });
+  }
+
     var images = [];
     <% @images.each do |image| %>
     images.push('<%=image%>');
@@ -39,6 +62,7 @@
         if (first) {
             first = false;
             $("#title, #instructions").hide();
+            $(':input').hide();
             view.fullScreen();
             $('body').css('background-color', 'black');
             $('html').css({cursor: 'none'});

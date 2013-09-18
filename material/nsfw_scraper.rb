@@ -4,15 +4,7 @@ require 'json'
 
 MIN_SCORE_REQUIRED = 100
 
-SUBREDDITS = %w[grool blowjobs dirtysmall nsfw nsfw_gifs realgirls boobies lipsthatgrip asiannsfw
-                amateur ass legalteens cumsluts nsfwhardcore blowjobs gonewild
-                earthporn pics funny WTF aww gifs cringepics trees
-                reactiongifs gentlemanboners cats woahdude foodporn
-                fiftyfifty food wallpapers cosplaygirls ImGoingToHellForThis
-                realgirls morbidreality rule34 milf girlsinyogapants
-                bustypetite hotchickswithtattoos onoff asianhotties curvy asstastic
-                asiansgonewild hentai gwcouples tinytits girlsfinishingthejob stacked
-                tightdresses camwhores nsfwfunny celebnsfw anal]
+SUBREDDITS = %w[pussy AnimalsBeingJerks]
 TIME = %w[all month week]
 
 def GetTopNSFW

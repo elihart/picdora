@@ -12,5 +12,7 @@ class ImagesController < ApplicationController
         @images.push(image.url + ".jpg")
       end
     end
+
+    @subreddits = Image.subreddits
   end
 end
