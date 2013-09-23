@@ -15,4 +15,16 @@ class ImagesController < ApplicationController
 
     @subreddits = Image.subreddits
   end
+
+  def subreddits
+    subs = params[:subs]
+    images = []
+    Image.where(subreddit: subs).each do |image|
+      image.url.chomp!(".jpg")
+      if !image.url.match("/a/")
+        images.push(image.url + ".jpg")
+      end
+    end
+    render json: images
+  end
 end

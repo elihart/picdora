@@ -3,8 +3,8 @@ class Image < ActiveRecord::Base
 
   def self.subreddits
     list = []
-    Image.select(:subreddit).distinct.each do |song|
-      list.push(song.subreddit)
+    Image.select(:subreddit).distinct.each do |sub|
+      list.push(sub.subreddit)
     end
     list.sort_by!{|m| m.downcase }
   end

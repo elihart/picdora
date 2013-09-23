@@ -1,12 +1,13 @@
 <h1 id="title">Picdora</h1>
 <p id="instructions">Instructions: Press any key to change pictures</p>
 <div id="options">
-  <%@subreddits.each do |subreddit|%>
-      <input type="checkbox" id="<%=subreddit%>" /><label for="<%=subreddit%>"><%=subreddit%></label>
-  <%end%>
+  <% @subreddits.each do |subreddit| %>
+      <input type="checkbox" id="<%= subreddit %>"/><label for="<%= subreddit %>"><%= subreddit %></label>
+  <% end %>
+  <input type="submit" id="start" value="Start"/>
 </div>
 
-<input type="submit" id="start" value="Start"/>
+
 
 <div id="viewer"></div>
 
@@ -15,61 +16,82 @@
 
 
 <script>
-  // style check boxes
-  $(function() {
-      $(':input').button();
+    // style check boxes
+    $(function () {
+        $(':input').button();
 
-      $('#start').click(start);
-  });
-
-  function start() {
-      console.log("clicked");
-      var subreddits = [];
-      $('input:checked').each(function() {
-          subreddits.push($(this).attr('id'));
-      });
-  }
+        $('#start').click(start);
+    });
 
     var images = [];
-    <% @images.each do |image| %>
-    images.push('<%=image%>');
-    <%end%>
-
-
-    var loader = new ImageLoader(images);
-
     var isMobile = jQuery.browser.mobile;
     var view = $('#viewer');
     var displayer = new ImageDisplayer(view, isMobile, recycleImg);
+    var loader;
+    var first = true;
 
-    $(document).bind('keydown touchend', keyPressed);
+    function start() {
+        console.log("clicked");
+        var subreddits = [];
+        $('input:checked').each(function () {
+            subreddits.push($(this).attr('id'));
+        });
 
-    $(window).bind('orientationchange resize', function(){
-        displayer.redraw();
-    });
+        $.ajax({
+            url: "http://localhost:3000/images/subreddits",
+            data: {"subs": subreddits}
+        })
+                .done(function (data) {
 
-    function keyPressed(event){
-        changePicture();
+                    for (var index in data) {
+                        images.push(data[index]);
+                    }
+
+                    loader = new ImageLoader(images);
+
+
+                    $(document).bind('keydown touchend', keyPressed);
+
+                    $(window).bind('orientationchange resize', function () {
+                        displayer.redraw();
+                    });
+
+                    // Hide controls
+                    $('#options').hide();
+
+                    // Start showing pictures
+                    changePicture();
+
+                });
     }
 
-    function recycleImg(image){
+
+    function keyPressed(e) {
+        if (e.keyCode === 70) {
+            view.fullScreen();
+        } else {
+            changePicture();
+        }
+
+    }
+
+    function recycleImg(image) {
         loader.useImage(image);
     }
 
-    var first = true;
+
     function changePicture() {
 
         if (first) {
             first = false;
             $("#title, #instructions").hide();
             $(':input').hide();
-            view.fullScreen();
             $('body').css('background-color', 'black');
             $('html').css({cursor: 'none'});
 
             // setup cursor hiding
             var j, justHidden;
-            $(document).bind('mousemove', function() {
+            $(document).bind('mousemove', function () {
                 if (!justHidden) {
                     justHidden = false;
                     clearTimeout(j);
@@ -80,15 +102,15 @@
             function hide() {
                 $('html').css({cursor: 'none'});
                 justHidden = true;
-                setTimeout(function() {
+                setTimeout(function () {
                     justHidden = false;
                 }, 500);
             }
 
             // start automatically changing
-            setInterval(function() {
-                changePicture();
-            }, 3000);
+//            setInterval(function () {
+//                changePicture();
+//            }, 3000);
         }
 
         displayer.setImage(loader.nextImage());
