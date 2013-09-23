@@ -10,7 +10,7 @@ File.open("../db/migrate/#{Time.now.utc.to_s.chomp!("UTC").gsub(/[-: ]/, '') }_a
 
 
   # Parse each file name and add it to the migration
-  File.open('top_links', 'r') do |file|
+  File.open('results', 'r') do |file|
     while (line = file.gets)
       url_object = JSON.parse(line)
       url = url_object["url"]
