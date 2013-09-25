@@ -3,11 +3,35 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 * {
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
+  //overflow: hidden;
+}
+
+.ui-button {
+  margin-bottom: 2px;
+  margin-top: 2px;
+  margin-left: 5px;
 }
 
 img {
+  padding: 0;
+  margin: 0;
   position: fixed;
+}
+
+.settings {
+  float: left;
+}
+
+#settings_container {
+
+}
+
+#categories_container {
+
+}
+
+#start {
+  clear: both;
+  margin-top: 30px;
+  text-align: center;
 }

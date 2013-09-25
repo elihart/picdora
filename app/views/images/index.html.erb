@@ -1,26 +1,95 @@
-<h1 id="title">Picdora</h1>
-<p id="instructions">Instructions: Press any key to change pictures</p>
-<div id="options">
-  <% @subreddits.each do |subreddit| %>
-      <input type="checkbox" id="<%= subreddit %>"/><label for="<%= subreddit %>"><%= subreddit %></label>
-  <% end %>
-  <input type="submit" id="start" value="Start"/>
-</div>
+<div id="home">
+  <h1 id="title">Picdora</h1>
 
+  <div id="instructions">
+    <p>Choose categories and settings then press go</p>
+    <p>Press any key to change pictures</p>
+    <p>Toggle fullscreen with 'f'</p>
+  </div>
+
+  <div id="options">
+    <div id="categories_container">
+      <h3 class="ui-widget-header ui-corner-all">Categories</h3>
+
+      <div id="categories_content">
+
+        <% @subreddits.each do |subreddit| %>
+            <input type="checkbox" id="<%= subreddit %>"/><label for="<%= subreddit %>"><%= subreddit %></label>
+        <% end %>
+      </div>
+    </div>
+
+    <div id="settings_container">
+      <h3 class="ui-widget-header ui-corner-all">Settings</h3>
+
+      <div id="settings_content">
+
+
+        <div id="nsfw_option" class="settings">
+          <input type="checkbox" id="nsfw_check"/><label for="nsfw_check">NSFW</label>
+        </div>
+
+        <div id="gif_option" class="settings">
+          <input type="checkbox" id="gif_check"/><label for="gif_check">GIF's</label>
+        </div>
+
+        <div id="slideshow_option" class="settings">
+          <input type="checkbox" id="slideshow_check"/><label for="slideshow_check">Slideshow</label>
+
+          <div id="time_slider">
+            <p>
+              <label for="time">Time:</label>
+              <input type="text" id="time" style="border: 0; color: #f6931f; font-weight: bold;"/>
+            </p>
+
+            <div id="slider-range-min"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div id="start">
+        <input type="submit" id="start_button" value="Go!"/>
+      </div>
+
+    </div>
+
+
+
+  </div>
+</div>
 
 
 <div id="viewer"></div>
 
 
-
-
-
 <script>
     // style check boxes
     $(function () {
-        $(':input').button();
+        $(':checkbox, #start_button').button();
 
-        $('#start').click(start);
+        // setup time slider for slideshow option
+//        $('#slideshow_check').change(function () {
+//            $('#time_slider').toggle('blind');
+//        });
+
+        $(function () {
+            $("#slider-range-min").slider({
+                range: "min",
+                value: 4,
+                min: 1,
+                max: 10,
+                slide: function (event, ui) {
+                    $("#time").val(ui.value + " seconds");
+                }
+            });
+            $("#time").val($("#slider-range-min").slider("value") + " seconds");
+        });
+
+        // start slider hid with option unchecked
+        $('#time_slider').hide();
+
+        $('#start_button').click(start);
     });
 
     var images = [];
@@ -57,7 +126,7 @@
                     });
 
                     // Hide controls
-                    $('#options').hide();
+                    $('#home').hide();
 
                     // Start showing pictures
                     changePicture();
@@ -84,8 +153,6 @@
 
         if (first) {
             first = false;
-            $("#title, #instructions").hide();
-            $(':input').hide();
             $('body').css('background-color', 'black');
             $('html').css({cursor: 'none'});
 
