@@ -1,4 +1,6 @@
 class Image < ActiveRecord::Base
+  belongs_to :category
+
   validates :url, uniqueness: true
 
   def self.subreddits

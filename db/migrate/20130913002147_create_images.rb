@@ -9,6 +9,8 @@ class CreateImages < ActiveRecord::Migration
       t.boolean :reported
       t.boolean :nsfw
       t.boolean :gif
+      t.integer :category_id
+
 
       t.timestamps
     end
