@@ -68,8 +68,17 @@
 
 
 <script>
-    // style check boxes
+    var images = [];
+    var isMobile = jQuery.browser.mobile;
+    var view = $('#viewer');
+    var displayer = new ImageDisplayer(view, isMobile, recycleImg);
+    var settings = new SettingsManager();
+    var loader;
+    var first = true;
+
+
     $(function () {
+        // style check boxes
         $(':checkbox, #start_button').button();
 
         // setup time slider for slideshow option
@@ -94,24 +103,25 @@
         $('#time_slider').hide();
 
         $('#start_button').click(start);
+
+        // load settings from cookies
+        settings.load();
     });
 
-    var images = [];
-    var isMobile = jQuery.browser.mobile;
-    var view = $('#viewer');
-    var displayer = new ImageDisplayer(view, isMobile, recycleImg);
-    var loader;
-    var first = true;
+
 
     function start() {
+        // save settings to cookies
+        settings.save();
+
         var subreddits = [];
         $('input:checked').each(function () {
             subreddits.push($(this).attr('id'));
         });
-
+        var c = $('#gif_check').is(':checked');
         $.ajax({
             url: "http://localhost:3000/images/subreddits",
-            data: {"subs": subreddits}
+            data: {"subs": subreddits, gifs: $('#gif_check').is(':checked')}
         })
                 .done(function (data) {
 

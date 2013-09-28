@@ -7,8 +7,12 @@ class ImagesController < ApplicationController
 
   def subreddits
     subs = params[:subs]
+    gifs = params[:gifs]
+    puts gifs
     images = []
-    Image.where(subreddit: subs).each do |image|
+    cats = Category.where(name: subs).pluck(:id)
+
+    Image.where(category_id: cats, gif: gifs).each do |image|
       image.url.chomp!(".jpg")
       if !image.url.match("/a/")
         images.push(image.url + ".jpg")
