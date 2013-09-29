@@ -14,7 +14,7 @@ class ImagesController < ApplicationController
 
     Image.where(category_id: cats, gif: gifs).each do |image|
       image.url.chomp!(".jpg")
-      if !image.url.match("/a/")
+      if (!image.url.match("/a/") && !image.url.match("/gallery/"))
         images.push(image.url + ".jpg")
       end
     end

@@ -1,22 +1,45 @@
-function ImageLoader(image_array) {
-    var images = image_array;
+function ImageLoader() {
+    var that = this;
+    var images = [];
 
     var QUEUE_SIZE = 5;
     var queue = [];
     var availableImages = [];
 
-    // Start loading queue
-    for (var i = 0; i < QUEUE_SIZE; i++) {
-        enqueueImage();
-    }
-
     function enqueueImage() {
         var img = availableImages.length ? availableImages.shift() : $('<img/>');
         var url = images[getRandomInt(0, images.length)];
+
+        $(img).unbind();
+        $(img).error(function () {
+            console.log("Image failed " + url);
+        });
+
         img.attr("src", url);
 
         queue.push(img);
     }
+
+    this.setImageList = function (imageList, callback) {
+        // TODO: check for no images?
+
+        // copy array of image urls
+        images.length = 0;
+        images = imageList.slice(0);
+
+        // clear any old pictures
+        queue.length = 0;
+
+        // Start loading queue
+        for (var i = 0; i < QUEUE_SIZE; i++) {
+            enqueueImage();
+        }
+
+        // set callback for first image
+        $(queue[0]).load(function () {
+            callback();
+        })
+    };
 
     this.nextImage = function () {
         enqueueImage();
@@ -53,6 +76,12 @@ function ImageDisplayer(view, mobile, recycleFunction) {
         activeImage.fadeIn();
 
 
+    };
+
+    this.reset = function () {
+        activeImage.remove();
+        recycleFunction(activeImage);
+        activeImage = null;
     };
 
     function fitImageToScreen(image) {
@@ -147,10 +176,10 @@ function SettingsManager() {
         nsfw = getItem('nsfw') === 'true' ? true : false;
         $('#nsfw_check').prop('checked', nsfw).button('refresh');
         // hide categories in accordance to button state
-        if($('#nsfw_check').is(':checked')){
+        if ($('#nsfw_check').is(':checked')) {
             $('#nsfw_categories').show();
             $('#sfw_categories').hide();
-        }    else {
+        } else {
             $('#nsfw_categories').hide();
             $('#sfw_categories').show();
         }

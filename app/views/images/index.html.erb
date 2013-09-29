@@ -27,15 +27,15 @@
 
         <div id="slideshow_option" class="settings">
           <input type="checkbox" id="slideshow_check"/><label for="slideshow_check">Slideshow</label>
+        </div>
 
-          <div id="time_slider">
-            <p>
-              <label for="time">Time:</label>
-              <input type="text" id="time" style="border: 0; color: #f6931f; font-weight: bold;"/>
-            </p>
+        <div id="time_slider">
+          <p>
+            <label for="time">Time:</label>
+            <input type="text" id="time" style="border: 0; color: #f6931f; font-weight: bold;"/>
+          </p>
 
-            <div id="slider-range-min"></div>
-          </div>
+          <div id="slider-range-min"></div>
         </div>
 
       </div>
@@ -66,17 +66,16 @@
   </div>
 </div>
 
-
 <div id="viewer"></div>
 
 
 <script>
-    var images = [];
     var isMobile = jQuery.browser.mobile;
     var view = $('#viewer');
     var displayer = new ImageDisplayer(view, isMobile, recycleImg);
     var settings = new SettingsManager();
-    var loader;
+    var loader = new ImageLoader();
+    var slideshow_int;
 
 
     $(function () {
@@ -100,8 +99,8 @@
 //            });
 //            $("#time").val($("#slider-range-min").slider("value") + " seconds");
 //        });
-//
-//        // start slider hid with option unchecked
+
+        // start slider hid
         $('#time_slider').hide();
 
         // add callback to toggle nsfw categories
@@ -133,6 +132,23 @@
         });
     });
 
+    var j, justHidden;
+    function checkCursor() {
+        if (!justHidden) {
+            justHidden = false;
+            clearTimeout(j);
+            $('html').css({cursor: 'default'});
+            j = setTimeout(hide, 1000);
+        }
+    }
+    function hide() {
+        $('html').css({cursor: 'none'});
+        justHidden = true;
+        setTimeout(function () {
+            justHidden = false;
+        }, 500);
+    }
+
 
     function start() {
         // save settings to cookies
@@ -140,11 +156,11 @@
 
         var subreddits = [];
         if ($('#nsfw_check').is(':checked')) {
-            $('.nsfw_category').each(function () {
+            $('.nsfw_category').filter(':checked').each(function () {
                 subreddits.push($(this).attr('id'));
             });
         } else {
-            $('.sfw_category').each(function () {
+            $('.sfw_category').filter(':checked').each(function () {
                 subreddits.push($(this).attr('id'));
             });
         }
@@ -154,59 +170,54 @@
             data: {"subs": subreddits, gifs: $('#gif_check').is(':checked')}
         })
                 .done(function (data) {
-
+                    var images = [];
                     for (var index in data) {
                         images.push(data[index]);
                     }
 
-                    loader = new ImageLoader(images);
+                    loader.setImageList(images, function(){
+                        $(document).bind('keydown touchend', keyPressed);
 
+                        $(window).bind('orientationchange resize', function () {
+                            displayer.redraw();
+                        });
 
-                    $(document).bind('keydown touchend', keyPressed);
+                        // Hide controls
+                        $('#home').hide();
+                        $('body').css('background-color', 'black');
 
-                    $(window).bind('orientationchange resize', function () {
-                        displayer.redraw();
-                    });
-
-                    // Hide controls
-                    $('#home').hide();
-                    $('body').css('background-color', 'black');
-                    $('html').css({cursor: 'none'});
-
-                    // setup cursor hiding
-                    var j, justHidden;
-                    $(document).bind('mousemove', function () {
-                        if (!justHidden) {
-                            justHidden = false;
-                            clearTimeout(j);
-                            $('html').css({cursor: 'default'});
-                            j = setTimeout(hide, 1000);
-                        }
-                    });
-                    function hide() {
+                        // setup cursor hiding
+                        $(document).bind('mousemove', checkCursor);
                         $('html').css({cursor: 'none'});
-                        justHidden = true;
-                        setTimeout(function () {
-                            justHidden = false;
-                        }, 500);
-                    }
 
-                    // start automatically changing
-                    setInterval(function () {
+                        // check for slideshow mode
+                        if ($('#slideshow_check').is(":checked")) {
+                            slideshow_int = setInterval(function () {
+                                changePicture();
+                            }, 5000);
+                        }
+
+                        // Start showing pictures
+                        $('#viewer').show();
                         changePicture();
-                    }, 3000);
-
-                    // Start showing pictures
-                    changePicture();
+                    });
                 });
     }
 
     function finish() {
-        $('#home').show();
+        displayer.reset();
         $('#viewer').hide();
+        $('#home').show();
+
         $('body').css('background-color', 'white');
 
-        loader = null;
+        slideshow_int && clearInterval(slideshow_int);
+        clearTimeout(j);
+
+        $(document).unbind('mousemove', checkCursor);
+        $(document).unbind('keydown touchend', keyPressed);
+        $('html').css({cursor: 'default'});
+
     }
 
 
