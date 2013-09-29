@@ -66,16 +66,20 @@
   </div>
 </div>
 
+<div id="loading"></div>
 <div id="viewer"></div>
 
 
 <script>
     var isMobile = jQuery.browser.mobile;
-    var view = $('#viewer');
-    var displayer = new ImageDisplayer(view, isMobile, recycleImg);
+    var $view = $('#viewer');
+    $view.hide();
+
+    var displayer = new ImageDisplayer($view, isMobile, recycleImg);
     var settings = new SettingsManager();
     var loader = new ImageLoader();
     var slideshow_int;
+    var loadingWidget = new LoadingWidget($('#loading'));
 
 
     $(function () {
@@ -151,6 +155,12 @@
 
 
     function start() {
+        // Hide controls
+        $('#home').hide();
+        $('body').css('background-color', 'black');
+        loadingWidget.start();
+
+
         // save settings to cookies
         settings.save();
 
@@ -182,9 +192,7 @@
                             displayer.redraw();
                         });
 
-                        // Hide controls
-                        $('#home').hide();
-                        $('body').css('background-color', 'black');
+
 
                         // setup cursor hiding
                         $(document).bind('mousemove', checkCursor);
@@ -198,7 +206,8 @@
                         }
 
                         // Start showing pictures
-                        $('#viewer').show();
+                        loadingWidget.stop();
+                        $view.show();
                         changePicture();
                     });
                 });
@@ -206,7 +215,7 @@
 
     function finish() {
         displayer.reset();
-        $('#viewer').hide();
+        $view.hide();
         $('#home').show();
 
         $('body').css('background-color', 'white');
@@ -225,7 +234,7 @@
         switch (e.keyCode) {
             // 'f'
             case 70:
-                view.fullScreen();
+                $view.fullScreen();
                 break;
             // 'esc'
             case 27:

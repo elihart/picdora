@@ -234,3 +234,19 @@ function SettingsManager() {
     }
 
 }
+
+function LoadingWidget(div) {
+    var $div = div;
+
+    this.start = function () {
+        $div.empty().show();
+        var $textSpan = $(document.createElement('span'));
+        $div.append($textSpan);
+        $textSpan.text("Loading");
+
+    };
+
+    this.stop = function () {
+        $(div).hide();
+    };
+}
