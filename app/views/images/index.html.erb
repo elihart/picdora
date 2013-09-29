@@ -66,7 +66,13 @@
   </div>
 </div>
 
-<div id="loading"></div>
+<!-- Work around styling to center loading div -->
+<div style="display: table; position: absolute; height: 100%; width: 100%;">
+  <div style="display: table-cell; vertical-align: middle;">
+    <div id="loading"></div>
+  </div>
+</div>
+
 <div id="viewer"></div>
 
 
@@ -185,13 +191,12 @@
                         images.push(data[index]);
                     }
 
-                    loader.setImageList(images, function(){
+                    loader.setImageList(images, function () {
                         $(document).bind('keydown touchend', keyPressed);
 
                         $(window).bind('orientationchange resize', function () {
                             displayer.redraw();
                         });
-
 
 
                         // setup cursor hiding

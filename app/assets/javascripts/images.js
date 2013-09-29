@@ -112,7 +112,10 @@ function ImageDisplayer(view, mobile, recycleFunction) {
             var left = (maxWidth - image.width()) / 2;
             var top = (maxHeight - image.height()) / 2;
             image.css({left: left, top: top});
-        } else {
+        }
+
+        // non mobile
+        else {
             // resize picture to fit screen
             if (imageAspectRatio > windowAspectRatio && image.width() > maxWidth) {
                 image.css({
@@ -237,6 +240,7 @@ function SettingsManager() {
 
 function LoadingWidget(div) {
     var $div = div;
+    var interval
 
     this.start = function () {
         $div.empty().show();
@@ -244,9 +248,38 @@ function LoadingWidget(div) {
         $div.append($textSpan);
         $textSpan.text("Loading");
 
+        var offset = (window.innerWidth / 2) - $textSpan.width() / 2;
+        $textSpan.css("margin-left", offset + "px");
+
+
+        // animate ellipse
+        var count = 1;
+        var speed = 300;
+        var numDots = 3;
+
+
+        interval = setInterval(animate, speed);
+
+        function animate(){
+            var text = "Loading" + repeat(".", count % (numDots + 1));
+            count += 1;
+            $textSpan.text(text);
+        }
+
+        function repeat(pattern, count) {
+            if (count < 1) return '';
+            var result = '';
+            while (count > 0) {
+                if (count & 1) result += pattern;
+                count >>= 1, pattern += pattern;
+            }
+            return result;
+        }
+
     };
 
     this.stop = function () {
         $(div).hide();
+        interval && clearInterval(interval);
     };
 }
