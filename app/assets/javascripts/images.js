@@ -130,7 +130,7 @@ function SettingsManager() {
         setItem('nsfw', nsfw);
 
         categories = [];
-        $('.sfw_sub, .nsfw_sub').filter(':checked').each(function () {
+        $('.category').filter(':checked').each(function () {
             categories.push(this.id);
         });
         setItem('categories', JSON.stringify(categories));
@@ -146,6 +146,14 @@ function SettingsManager() {
 
         nsfw = getItem('nsfw') === 'true' ? true : false;
         $('#nsfw_check').prop('checked', nsfw).button('refresh');
+        // hide categories in accordance to button state
+        if($('#nsfw_check').is(':checked')){
+            $('#nsfw_categories').show();
+            $('#sfw_categories').hide();
+        }    else {
+            $('#nsfw_categories').hide();
+            $('#sfw_categories').show();
+        }
 
         categories = getItem('categories');
         if (categories) {
