@@ -6,6 +6,14 @@
   overflow: hidden;
 }
 
+#title {
+  text-align: center;
+}
+
+#instructions {
+  list-style: disc;
+}
+
 .ui-button {
   margin-bottom: 2px;
   margin-top: 2px;
@@ -45,4 +53,16 @@ img {
   font-family: 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   font-size: 2.0em;
   color: white;
+}
+
+#none_error {
+  display: none;
+  position: fixed;
+  width: 300px;
+  background-color: black;
+  border-radius: 10px;
+  font-family: 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 2.0em;
+  color: white;
+  text-align: center;
 }

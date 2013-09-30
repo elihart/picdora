@@ -2,11 +2,12 @@
   <h1 id="title">Picdora</h1>
 
   <div id="instructions">
-    <p>Choose categories and settings then press go</p>
-
-    <p>Press any key to change pictures</p>
-
-    <p>Toggle fullscreen with 'f'</p>
+    <ul>
+      <li>Choose settings and categories and press Go!</li>
+      <li>Press any key to change pictures</li>
+      <li>'F' toggles fullscreen</li>
+      <li>'Esc' returns you to the main menu</li>
+    </ul>
   </div>
 
   <div id="options">
@@ -74,6 +75,8 @@
 </div>
 
 <div id="viewer"></div>
+
+<div id="none_error"></div>
 
 
 <script>
@@ -191,6 +194,14 @@
                         images.push(data[index]);
                     }
 
+                    // if no images match the request
+                    if (images.length === 0) {
+                        loadingWidget.stop();
+                        noneError($('#none_error'));
+                        finish();
+                        return;
+                    }
+
                     loader.setImageList(images, function () {
                         $(document).bind('keydown touchend', keyPressed);
 
@@ -258,6 +269,28 @@
 
     function changePicture() {
         displayer.setImage(loader.nextImage());
+    }
+
+    function noneError($div) {
+
+
+        $div.empty().show();
+
+        var $textSpan = $(document.createElement('span'));
+        $textSpan.text("Sorry... No images match that :(");
+        $div.append($textSpan);
+
+        var left = (window.innerWidth / 2) - $div.width() / 2;
+        var top = (window.innerHeight / 2) - $div.height() / 2;
+        $div.css({
+            left: left,
+            top: top
+        });
+
+
+        setTimeout(function () {
+            $div.empty().hide();
+        }, 1000);
     }
 </script>
 

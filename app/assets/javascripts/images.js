@@ -79,9 +79,11 @@ function ImageDisplayer(view, mobile, recycleFunction) {
     };
 
     this.reset = function () {
-        activeImage.remove();
-        recycleFunction(activeImage);
-        activeImage = null;
+        if (activeImage) {
+            activeImage.remove();
+            recycleFunction(activeImage);
+            activeImage = null;
+        }
     };
 
     function fitImageToScreen(image) {
@@ -260,7 +262,7 @@ function LoadingWidget(div) {
 
         interval = setInterval(animate, speed);
 
-        function animate(){
+        function animate() {
             var text = "Loading" + repeat(".", count % (numDots + 1));
             count += 1;
             $textSpan.text(text);
@@ -279,7 +281,8 @@ function LoadingWidget(div) {
     };
 
     this.stop = function () {
-        $(div).hide();
+        $(div).empty().hide();
         interval && clearInterval(interval);
     };
+
 }
