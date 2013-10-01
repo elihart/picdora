@@ -1,12 +1,25 @@
 <div id="home">
-  <h1 id="title">Picdora</h1>
+  <div id="header">
+    <h1 id="title">Picdora</h1>
+    <input type="submit" id="instructions_button" value="Instructions"/>
+  </div>
 
-  <div id="instructions">
+  <div id="instructions_dialog" title="Instructions">
+    To get started...
     <ul>
       <li>Choose settings and categories and press Go!</li>
       <li>Press any key to change pictures</li>
-      <li>'F' toggles fullscreen</li>
-      <li>'Esc' returns you to the main menu</li>
+    </ul>
+    Settings:
+    <ul>
+      <li>NSFW - Toggle nsfw categories</li>
+      <li>Gifs - Show only gifs</li>
+      <li>Slideshow - Automatically change pictures every few seconds</li>
+    </ul>
+    Controls:
+    <ul>
+      <li>'F' - Toggles fullscreen</li>
+      <li>'Esc' - Returns you to the main menu</li>
     </ul>
   </div>
 
@@ -68,7 +81,7 @@
 </div>
 
 <!-- Work around styling to center loading div -->
-<div style="display: table; position: absolute; height: 100%; width: 100%;">
+<div id="loading_container">
   <div style="display: table-cell; vertical-align: middle;">
     <div id="loading"></div>
   </div>
@@ -92,8 +105,19 @@
 
 
     $(function () {
-        // style check boxes
-        $(':checkbox, #start_button').button();
+        // style buttons
+        $('input').button();
+
+        $("#instructions_dialog").dialog({
+            modal: true,
+            autoOpen: false
+        });
+
+        // instructions click callback
+        $('#instructions_button').click(function () {
+            $("#instructions_dialog").dialog("open");
+        });
+
 
         // setup time slider for slideshow option
 //        $('#slideshow_check').change(function () {
@@ -167,6 +191,7 @@
         // Hide controls
         $('#home').hide();
         $('body').css('background-color', 'black');
+        $('html').css({overflow: 'hidden'});
         loadingWidget.start();
 
 
@@ -235,6 +260,7 @@
         $('#home').show();
 
         $('body').css('background-color', 'white');
+        $('html').css({overflow: 'visible'});
 
         slideshow_int && clearInterval(slideshow_int);
         clearTimeout(j);

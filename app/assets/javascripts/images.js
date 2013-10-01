@@ -245,7 +245,12 @@ function LoadingWidget(div) {
     var interval
 
     this.start = function () {
-        $div.empty().show();
+        $div.empty();
+
+        // show loading container
+        // TODO: Fix this bad style...
+        $('#loading_container').css({display: 'table'});
+
         var $textSpan = $(document.createElement('span'));
         $div.append($textSpan);
         $textSpan.text("Loading");
@@ -281,7 +286,7 @@ function LoadingWidget(div) {
     };
 
     this.stop = function () {
-        $(div).empty().hide();
+        $('#loading_container').css({display: 'none'});
         interval && clearInterval(interval);
     };
 

@@ -3,15 +3,31 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 * {
-  overflow: hidden;
+  //overflow: hidden;
 }
 
-#title {
+
+
+
+#home {
+  width: auto;
+  margin: 0 auto;
+}
+
+#loading_container {
+  display: none;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+}
+
+#header {
+  margin: 0 auto;
   text-align: center;
 }
 
-#instructions {
-  list-style: disc;
+#title {
+
 }
 
 .ui-button {
