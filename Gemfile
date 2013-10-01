@@ -9,6 +9,9 @@ gem 'pg'
 gem 'rails_12factor', group: :production
 ruby '2.0.0'
 
+# use thin for webserver
+gem 'thin'
+
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 4.0.0'
 
