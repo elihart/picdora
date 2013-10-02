@@ -78,6 +78,14 @@ function ImageDisplayer(view, mobile, recycleFunction) {
 
     };
 
+    this.getCurrentImageUrl = function () {
+        if (activeImage) {
+            return activeImage.attr('src');
+        } else {
+            return null;
+        }
+    };
+
     this.reset = function () {
         if (activeImage) {
             activeImage.remove();

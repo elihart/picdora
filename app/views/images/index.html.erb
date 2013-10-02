@@ -18,8 +18,9 @@
     </ul>
     Controls:
     <ul>
-      <li>'F' - Toggles fullscreen</li>
-      <li>'Esc' - Returns you to the main menu</li>
+      <li>f - Toggles fullscreen</li>
+      <li>Esc - Returns you to the main menu</li>
+      <li>i - Reverse image lookup</li>
     </ul>
   </div>
 
@@ -282,6 +283,10 @@
             case 27:
                 finish();
                 break;
+            // 'i'
+            case 73:
+                imageLookup();
+                break;
             default:
                 changePicture();
                 break;
@@ -317,6 +322,15 @@
         setTimeout(function () {
             $div.empty().hide();
         }, 1000);
+    }
+
+    function imageLookup() {
+        var img = displayer.getCurrentImageUrl();
+
+        if (img) {
+            var url = 'https://www.google.com/searchbyimage?&image_url=' + img;
+            window.open(url);
+        }
     }
 </script>
 
