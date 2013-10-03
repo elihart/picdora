@@ -28,6 +28,9 @@ File.open("../db/migrate/#{Time.now.utc.to_s.chomp!("UTC").gsub(/[-: ]/, '') }_a
 
   # Add end tags
   migration.puts <<-END_CODE
+    Category.each do |cat|
+      Image.where(category_id: nil, subreddit: cat.name).update_all(category_id: cat.id)
+    end
     end
     end
   END_CODE
