@@ -12690,7 +12690,7 @@ class AddImages1380484639 < ActiveRecord::Migration
     Image.create(url: 'http://i.imgur.com/dQNhTpt.jpg', reddit_score: 18, subreddit: 'iwanttofuckher', nsfw: true, gif: false)
     Image.create(url: 'http://imgur.com/a/rbSt4', reddit_score: 13, subreddit: 'iwanttofuckher', nsfw: true, gif: false)
 
-    Category.each do |cat|
+    Category.all.each do |cat|
       Image.where(category_id: nil, subreddit: cat.name).update_all(category_id: cat.id)
     end
   end
