@@ -211,7 +211,7 @@
         }
 
         $.ajax({
-            url: "http://localhost:3000/images/subreddits",
+            url: "<%=request.original_url%>/images/subreddits",
             data: {"subs": subreddits, gifs: $('#gif_check').is(':checked')}
         })
                 .done(function (data) {
