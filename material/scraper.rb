@@ -25,7 +25,7 @@ end
 def GetTopNSFW(subs)
   counter = 0
   start = Time.now
-  File.open('results', 'w') do |f|
+  File.open(Time.now.utc.to_s.chomp!("UTC"), 'w') do |f|
     # Go through each subreddit
     subs.each do |subreddit|
       # Go through each time option

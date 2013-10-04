@@ -1,7 +1,7 @@
 require 'json'
 
 # Create migration file
-File.open("../db/migrate/#{Time.now.utc.to_s.chomp!("UTC").gsub(/[-: ]/, '') }_add_images#{Time.now.to_i}.rb", 'w') do |migration|
+File.open("../db/migrate/#{Time.now.utc.to_s.chomp("UTC").gsub(/[-: ]/, '') }_add_images#{Time.now.to_i}.rb", 'w') do |migration|
   # Add migration info to top of file
   migration.puts <<-START_CODE
     class AddImages#{Time.now.to_i} < ActiveRecord::Migration
@@ -28,7 +28,7 @@ File.open("../db/migrate/#{Time.now.utc.to_s.chomp!("UTC").gsub(/[-: ]/, '') }_a
 
   # Add end tags
   migration.puts <<-END_CODE
-    Category.each do |cat|
+    Category.all.each do |cat|
       Image.where(category_id: nil, subreddit: cat.name).update_all(category_id: cat.id)
     end
     end

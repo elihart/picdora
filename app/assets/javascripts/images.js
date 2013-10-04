@@ -16,6 +16,7 @@ function ImageLoader() {
         });
 
         img.attr("src", url);
+        img.attr("loop", -1);
 
         queue.push(img);
     }
@@ -102,8 +103,10 @@ function ImageDisplayer(view, mobile, recycleFunction) {
         var imageAspectRatio = image.width() / image.height();
 
         if (mobile) {
-            // Stretch image to take up full screen space on mobile
+            // try to hide address bar
+            window.scrollTo(0, 1);
 
+            // Stretch image to take up full screen space on mobile
             if (imageAspectRatio > windowAspectRatio) {
                 image.css({
                     width: '100%',
