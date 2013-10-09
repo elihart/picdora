@@ -4,7 +4,7 @@ development:
   database: picdora_development
   pool: 5
   username: eli
-  password:
+  password: asdfasdf
 
 test:
   adapter: postgresql
@@ -12,7 +12,7 @@ test:
   database: picdora_test
   pool: 5
   username: eli
-  password:
+  password: asdfasdf
 
 production:
   adapter: postgresql

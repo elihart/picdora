@@ -1,5 +1,7 @@
 class Image < ActiveRecord::Base
   belongs_to :category
+  has_many :views
+  has_many :users, through: :views
 
   validates :url, uniqueness: true
 
