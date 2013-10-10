@@ -1,4 +1,3 @@
 class View < ActiveRecord::Base
-  belongs_to :user
-  belongs_to :image
+  belongs_to :channel
 end

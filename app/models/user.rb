@@ -1,9 +1,5 @@
 class User < ActiveRecord::Base
-  has_many :views
-  has_many :images, through: :views
+  has_many :channels
+  has_many :views, through: :channels
 
-
-  def record_view(image, liked)
-
-  end
 end
