@@ -11,11 +11,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131006234419) do
+ActiveRecord::Schema.define(version: 20131011020806) do
 
   create_table "categories", force: true do |t|
     t.string   "name"
     t.boolean  "nsfw"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "channels", force: true do |t|
+    t.string   "name"
+    t.integer  "user_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -30,6 +37,21 @@ ActiveRecord::Schema.define(version: 20131006234419) do
     t.boolean  "nsfw"
     t.boolean  "gif"
     t.integer  "category_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "users", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "views", force: true do |t|
+    t.integer  "channel_id"
+    t.integer  "image_id"
+    t.boolean  "liked"
+    t.integer  "count",      default: 0
     t.datetime "created_at"
     t.datetime "updated_at"
   end
