@@ -104,6 +104,10 @@
     var slideshow_int;
     var loadingWidget = new LoadingWidget($('#loading'));
 
+    PICDORA = {
+        BASE_URL : "<%=request.original_url%>"
+    };
+
 
     $(function () {
         // style buttons
@@ -211,7 +215,7 @@
         }
 
         $.ajax({
-            url: "<%=request.original_url%>/images/subreddits",
+            url: PICDORA.BASE_URL + "/images/subreddits",
             data: {"subs": subreddits, gifs: $('#gif_check').is(':checked')}
         })
                 .done(function (data) {
@@ -287,7 +291,26 @@
             case 73:
                 imageLookup();
                 break;
+            // left arrow
+            case 37:
+
+                break;
+            // up arrow
+            case 38:
+                recordLike(1, displayer.getCurrentImageId(), true);
+                changePicture();
+                break;
+            // right arrow
+            case 39:
+
+                break;
+            // down arrow
+            case 40:
+                recordLike(1, displayer.getCurrentImageId(), false);
+                changePicture();
+                break;
             default:
+
                 changePicture();
                 break;
         }

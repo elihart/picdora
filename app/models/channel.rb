@@ -11,7 +11,7 @@ class Channel < ActiveRecord::Base
 
     seen = View.where(channel: self).pluck(:image_id)
 
-    image = Image.where(category_id: categories).where.not(id: seen).order("reddit_score DESC").limit(5)
+    image = Image.where(category_id: categories).where.not(id: seen).order("reddit_score DESC").first
 
     return image
   end

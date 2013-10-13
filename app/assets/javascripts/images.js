@@ -8,17 +8,26 @@ function ImageLoader() {
 
     function enqueueImage() {
         var img = availableImages.length ? availableImages.shift() : $('<img/>');
-        var url = images[getRandomInt(0, images.length)];
+        //var url = images[getRandomInt(0, images.length)];
 
         $(img).unbind();
         $(img).error(function () {
-            console.log("Image failed " + url);
+            console.log("Image failed " + $(img).attr('src'));
         });
-
-        img.attr("src", url);
-        img.attr("loop", -1);
-
         queue.push(img);
+
+        getChannelImage(1, function(data){
+            img.attr({
+                src : data.url + '.jpg',
+                loop : -1,
+                id :data.id
+            });
+
+            // if queue isn't full, add another image
+            if(queue.length < QUEUE_SIZE){
+                enqueueImage();
+            }
+        });
     }
 
     this.setImageList = function (imageList, callback) {
@@ -32,9 +41,7 @@ function ImageLoader() {
         queue.length = 0;
 
         // Start loading queue
-        for (var i = 0; i < QUEUE_SIZE; i++) {
-            enqueueImage();
-        }
+        enqueueImage();
 
         // set callback for first image
         $(queue[0]).load(function () {
@@ -61,6 +68,7 @@ function ImageDisplayer(view, mobile, recycleFunction) {
     var view = view;
     var mobile = mobile;
     var recycleFunction = recycleFunction;
+    var  that = this;
 
     this.setImage = function (image) {
         // Remove old image
@@ -70,18 +78,25 @@ function ImageDisplayer(view, mobile, recycleFunction) {
                 recycleFunction($(this));
             });
         }
+
         activeImage = image;
         activeImage.appendTo(view);
         fitImageToScreen(image);
         activeImage.hide();
         activeImage.fadeIn();
-
-
     };
 
     this.getCurrentImageUrl = function () {
         if (activeImage) {
             return activeImage.attr('src');
+        } else {
+            return null;
+        }
+    };
+
+    this.getCurrentImageId = function () {
+        if (activeImage) {
+            return activeImage.attr('id');
         } else {
             return null;
         }

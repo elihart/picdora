@@ -12,8 +12,13 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require turbolinks
 //= require_tree .
+
+
+
+function log(msg){
+    console.log(msg);
+}
 
 
 

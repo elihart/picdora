@@ -38,12 +38,11 @@ ActiveRecord::Schema.define(version: 20131011040045) do
     t.string   "url"
     t.integer  "reddit_score"
     t.string   "subreddit"
-    t.integer  "likes"
-    t.integer  "dislikes"
     t.boolean  "reported"
     t.boolean  "nsfw"
     t.boolean  "gif"
     t.integer  "category_id"
+    t.integer  "album_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
