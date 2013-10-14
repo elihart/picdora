@@ -2,12 +2,13 @@ class Channel < ActiveRecord::Base
   belongs_to :user
   has_many :views
 
+  # logic for recommending an image
   def next_image
     # non porn nsfw categories to exclude
     exclude = %w[morbidreality fiftyfifty imgoingtohellforthis]
 
     # porn categories
-    categories = Category.nsfw.where.not(name: exclude).order("name").ids
+    categories = Category.nsfw.where.not(name: exclude).ids
 
     seen = View.where(channel: self).pluck(:image_id)
 

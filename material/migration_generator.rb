@@ -1,5 +1,7 @@
 require 'json'
 
+fileName = ARGV[0]
+
 # Create migration file
 File.open("../db/migrate/#{Time.now.utc.to_s.chomp("UTC").gsub(/[-: ]/, '') }_add_images#{Time.now.to_i}.rb", 'w') do |migration|
   # Add migration info to top of file
@@ -10,7 +12,7 @@ File.open("../db/migrate/#{Time.now.utc.to_s.chomp("UTC").gsub(/[-: ]/, '') }_ad
 
 
   # Parse each file name and add it to the migration
-  File.open('results', 'r') do |file|
+  File.open(fileName, 'r') do |file|
     while (line = file.gets)
       url_object = JSON.parse(line)
       url = url_object["url"]

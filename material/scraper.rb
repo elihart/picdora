@@ -22,10 +22,9 @@ File.open('subreddit_list', 'r') do |f|
 end
 
 
-def GetTopNSFW(subs)
-  counter = 0
+def GetTopNSFW(subs)  counter = 0
   start = Time.now
-  File.open(Time.now.utc.to_s.chomp!("UTC"), 'w') do |f|
+  File.open(Time.now.strftime("%Y-%m-%d"), 'w') do |f|
     # Go through each subreddit
     subs.each do |subreddit|
       # Go through each time option

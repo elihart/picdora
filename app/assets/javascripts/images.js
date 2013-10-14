@@ -24,6 +24,8 @@ function ImageLoader() {
             });
 
             // if queue isn't full, add another image
+            // we do this to avoid parallel ajax calls which results in duplicate images
+            // as backend doesn't handle parallel well
             if(queue.length < QUEUE_SIZE){
                 enqueueImage();
             }
