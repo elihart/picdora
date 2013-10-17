@@ -4,7 +4,7 @@ class CreateImages < ActiveRecord::Migration
       t.string :url
       t.integer :reddit_score
       t.string :subreddit
-      t.boolean :reported
+      t.boolean :reported, default: false
       t.boolean :nsfw
       t.boolean :gif
       t.integer :category_id

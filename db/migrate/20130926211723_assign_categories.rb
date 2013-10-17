@@ -13,14 +13,11 @@ class AssignCategories < ActiveRecord::Migration
         end
       end
       isNFSW = nsfwCount > (sampleSize / 5) ? true : false
-      puts "#{categoryName} nsfw? - #{isNFSW}"
 
       # Create the category and update images with that category
       category = Category.create(name: categoryName, nsfw: isNFSW)
       Image.where(subreddit: categoryName).update_all(category_id: category.id)
     end
-
-    puts "Created #{Category.all.size} categories with #{Image.all.size} images"
 
   end
 end

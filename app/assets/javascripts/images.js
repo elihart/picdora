@@ -2,35 +2,51 @@ function ImageLoader() {
     var that = this;
     var images = [];
 
-    var QUEUE_SIZE = 5;
+    var QUEUE_SIZE = 10;
     var queue = [];
     var availableImages = [];
 
-    function enqueueImage() {
-        var img = availableImages.length ? availableImages.shift() : $('<img/>');
+    function enqueueImage(image, callback) {
+        var $img = availableImages.length ? availableImages.shift() : $('<img/>');
         //var url = images[getRandomInt(0, images.length)];
 
-        $(img).unbind();
-        $(img).error(function () {
-            console.log("Image failed " + $(img).attr('src'));
+        $img.unbind();
+        $img.error(function () {
+            console.log("Image failed " + $img.attr('src'));
         });
-        queue.push(img);
 
-        getChannelImage(1, function(data){
-            img.attr({
-                src : data.url + '.jpg',
-                loop : -1,
-                id :data.id
-            });
 
-            // if queue isn't full, add another image
-            // we do this to avoid parallel ajax calls which results in duplicate images
-            // as backend doesn't handle parallel well
-            if(queue.length < QUEUE_SIZE){
-                enqueueImage();
+        $img.attr({
+            src: image.url + '.jpg',
+            loop: -1,
+            id: image.id
+        });
+
+        if(callback){
+            $img.load(callback);
+        }
+
+        queue.push($img);
+    }
+
+    // fills the queue of images to display. If a callback function is provided
+    // it will be passed on to the first
+    this.loadQueue = function (callback) {
+        getChannelImage(1, QUEUE_SIZE, function (data) {
+            for (var i = 0; i < data.length; i++) {
+                var image = data[i];
+                log(image);
+                // TODO: cleaner way to callback on first image load
+                if (callback && i === 0) {
+                    enqueueImage(image, callback);
+                    log("first");
+                } else {
+                    enqueueImage(image);
+                }
+
             }
         });
-    }
+    };
 
     this.setImageList = function (imageList, callback) {
         // TODO: check for no images?
@@ -43,16 +59,17 @@ function ImageLoader() {
         queue.length = 0;
 
         // Start loading queue
-        enqueueImage();
+        enqueueImage(callback);
 
         // set callback for first image
-        $(queue[0]).load(function () {
-            callback();
-        })
+        $(queue[0]).load(callback);
     };
 
     this.nextImage = function () {
-        enqueueImage();
+        if(queue.length < QUEUE_SIZE){
+            that.loadQueue();
+        }
+
         return queue.shift();
     };
 
@@ -70,7 +87,7 @@ function ImageDisplayer(view, mobile, recycleFunction) {
     var view = view;
     var mobile = mobile;
     var recycleFunction = recycleFunction;
-    var  that = this;
+    var that = this;
 
     this.setImage = function (image) {
         // Remove old image

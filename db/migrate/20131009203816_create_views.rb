@@ -4,6 +4,7 @@ class CreateViews < ActiveRecord::Migration
       t.integer :channel_id
       t.integer :image_id
       t.boolean :liked, default: nil
+      t.boolean :saved, default: false
       t.integer :count, default: 0
 
       t.timestamps

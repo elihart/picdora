@@ -11,10 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131011040045) do
+ActiveRecord::Schema.define(version: 20131014072320) do
 
   create_table "albums", force: true do |t|
     t.boolean  "nsfw"
+    t.integer  "reddit_score"
+    t.integer  "category_id"
     t.string   "url"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -30,6 +32,7 @@ ActiveRecord::Schema.define(version: 20131011040045) do
   create_table "channels", force: true do |t|
     t.string   "name"
     t.integer  "user_id"
+    t.text     "model"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -38,7 +41,7 @@ ActiveRecord::Schema.define(version: 20131011040045) do
     t.string   "url"
     t.integer  "reddit_score"
     t.string   "subreddit"
-    t.boolean  "reported"
+    t.boolean  "reported",     default: false
     t.boolean  "nsfw"
     t.boolean  "gif"
     t.integer  "category_id"
@@ -57,6 +60,7 @@ ActiveRecord::Schema.define(version: 20131011040045) do
     t.integer  "channel_id"
     t.integer  "image_id"
     t.boolean  "liked"
+    t.boolean  "saved",      default: false
     t.integer  "count",      default: 0
     t.datetime "created_at"
     t.datetime "updated_at"

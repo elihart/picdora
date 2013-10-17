@@ -105,7 +105,7 @@
     var loadingWidget = new LoadingWidget($('#loading'));
 
     PICDORA = {
-        BASE_URL : "<%=request.original_url%>"
+        BASE_URL: "<%=request.original_url%>"
     };
 
 
@@ -203,60 +203,78 @@
         // save settings to cookies
         settings.save();
 
-        var subreddits = [];
-        if ($('#nsfw_check').is(':checked')) {
-            $('.nsfw_category').filter(':checked').each(function () {
-                subreddits.push($(this).attr('id'));
+//        var subreddits = [];
+//        if ($('#nsfw_check').is(':checked')) {
+//            $('.nsfw_category').filter(':checked').each(function () {
+//                subreddits.push($(this).attr('id'));
+//            });
+//        } else {
+//            $('.sfw_category').filter(':checked').each(function () {
+//                subreddits.push($(this).attr('id'));
+//            });
+//        }
+
+        loader.loadQueue(function () {
+            $(document).bind('keydown touchend', keyPressed);
+
+            $(window).bind('orientationchange resize', function () {
+                displayer.redraw();
             });
-        } else {
-            $('.sfw_category').filter(':checked').each(function () {
-                subreddits.push($(this).attr('id'));
-            });
-        }
-
-        $.ajax({
-            url: PICDORA.BASE_URL + "/images/subreddits",
-            data: {"subs": subreddits, gifs: $('#gif_check').is(':checked')}
-        })
-                .done(function (data) {
-                    var images = [];
-                    for (var index in data) {
-                        images.push(data[index]);
-                    }
-
-                    // if no images match the request
-                    if (images.length === 0) {
-                        loadingWidget.stop();
-                        noneError($('#none_error'));
-                        finish();
-                        return;
-                    }
-
-                    loader.setImageList(images, function () {
-                        $(document).bind('keydown touchend', keyPressed);
-
-                        $(window).bind('orientationchange resize', function () {
-                            displayer.redraw();
-                        });
 
 
-                        // setup cursor hiding
-                        $(document).bind('mousemove', checkCursor);
-                        $('html').css({cursor: 'none'});
+            // setup cursor hiding
+            $(document).bind('mousemove', checkCursor);
+            $('html').css({cursor: 'none'});
 
-                        // check for slideshow mode
-                        if ($('#slideshow_check').is(":checked")) {
-                            slideshow_int = setInterval(function () {
-                                changePicture();
-                            }, 5000);
-                        }
+            // Start showing pictures
+            loadingWidget.stop();
+            $view.show();
+            changePicture();
+        });
 
-                        // Start showing pictures
-                        loadingWidget.stop();
-                        $view.show();
-                        changePicture();
-                    });
-                });
+//        $.ajax({
+//            url: PICDORA.BASE_URL + "/images/subreddits",
+//            data: {"subs": subreddits, gifs: $('#gif_check').is(':checked')}
+//        })
+//                .done(function (data) {
+//                    var images = [];
+//                    for (var index in data) {
+//                        images.push(data[index]);
+//                    }
+//
+//                    // if no images match the request
+//                    if (images.length === 0) {
+//                        loadingWidget.stop();
+//                        noneError($('#none_error'));
+//                        finish();
+//                        return;
+//                    }
+//
+//                    loader.setImageList(images, function () {
+//                        $(document).bind('keydown touchend', keyPressed);
+//
+//                        $(window).bind('orientationchange resize', function () {
+//                            displayer.redraw();
+//                        });
+//
+//
+//                        // setup cursor hiding
+//                        $(document).bind('mousemove', checkCursor);
+//                        $('html').css({cursor: 'none'});
+//
+//                        // check for slideshow mode
+//                        if ($('#slideshow_check').is(":checked")) {
+//                            slideshow_int = setInterval(function () {
+//                                changePicture();
+//                            }, 5000);
+//                        }
+//
+//                        // Start showing pictures
+//                        loadingWidget.stop();
+//                        $view.show();
+//                        changePicture();
+//                    });
+//                });
     }
 
     function finish() {
@@ -290,6 +308,14 @@
             // 'i'
             case 73:
                 imageLookup();
+                break;
+            // 's'
+            case 83:
+                saveImage();
+                break;
+            // 'r'
+            case 82:
+                reportImage();
                 break;
             // left arrow
             case 37:
