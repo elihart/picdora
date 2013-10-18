@@ -2,9 +2,15 @@ function ImageLoader() {
     var that = this;
     var images = [];
 
-    var QUEUE_SIZE = 10;
+    // number of images to get per request
+    var BATCH_SIZE = 10;
+    // number of images to save for going back
+    var BACKLOG_SIZE = 5;
+
     var queue = [];
     var availableImages = [];
+    var currIndex = null;
+    var endIndex = null;
 
     function enqueueImage(image, callback) {
         var $img = availableImages.length ? availableImages.shift() : $('<img/>');
@@ -22,7 +28,7 @@ function ImageLoader() {
             id: image.id
         });
 
-        if(callback){
+        if (callback) {
             $img.load(callback);
         }
 
@@ -66,11 +72,16 @@ function ImageLoader() {
     };
 
     this.nextImage = function () {
-        if(queue.length < QUEUE_SIZE){
+        if (queue.length < QUEUE_SIZE) {
             that.loadQueue();
         }
 
         return queue.shift();
+    };
+
+    this.prevImage = function () {
+
+        return null;
     };
 
     this.useImage = function (image) {

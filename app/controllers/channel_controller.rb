@@ -12,7 +12,7 @@ class ChannelController < ApplicationController
     image = params[:image_id]
     liked = params[:liked]
 
-    view = View.where(channel_id: channel, image_id: image)
+    view = View.where(channel_id: channel, image_id: image).first
 
     view.update(liked: liked)
 
@@ -25,12 +25,16 @@ class ChannelController < ApplicationController
   end
 
   def save_image
-    view = View.where(channel_id: params[:channel_id], image_id: params[:image_id])
+    view = View.where(channel_id: params[:channel_id], image_id: params[:image_id]).first
     view.update(saved: params[:saved])
+
+    render json: view
   end
 
   def report_image
-    image = Image.find(params[:image_id])
+    image = Image.unscoped.find(params[:image_id])
     image.update(reported: true)
+
+    render json: image
   end
 end

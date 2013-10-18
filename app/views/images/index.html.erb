@@ -311,11 +311,16 @@
                 break;
             // 's'
             case 83:
-                saveImage();
+                saveImage(1, displayer.getCurrentImageId(), true, function () {
+                    log("saved")
+                });
                 break;
             // 'r'
             case 82:
-                reportImage();
+                reportImage(displayer.getCurrentImageId(),
+                        function () {
+                            log("reported")
+                        });
                 break;
             // left arrow
             case 37:
@@ -328,7 +333,7 @@
                 break;
             // right arrow
             case 39:
-
+                changePicture();
                 break;
             // down arrow
             case 40:
@@ -346,9 +351,17 @@
         loader.useImage(image);
     }
 
-
+    // shows the next picture in the queue
     function changePicture() {
         displayer.setImage(loader.nextImage());
+    }
+
+    // shows the previous picture if possible
+    function previousPicture(){
+        var img = loader.prevImage();
+        if(img){
+            displayer.setImage(img);
+        }
     }
 
     function noneError($div) {
