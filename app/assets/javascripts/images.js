@@ -2,19 +2,34 @@ function ImageLoader() {
     var that = this;
     var images = [];
 
-    // number of images to get per request
-    var BATCH_SIZE = 10;
-    // number of images to save for going back
-    var BACKLOG_SIZE = 5;
+    // number of images to get per request. Bigger batches reduce image loading time for the user,
+    // and reduce server bandwidth and cpu, however, it uses more of the user's memory and large batches
+    // won't quickly reflect updated image preferences
+    var BATCH_SIZE = 15;
+    // number of images to save for going back. Don't use too much of user's system memory,
+    // especially for mobile
+    var BACKLOG_SIZE = 10;
+    // the minimum size the queue should reach. If if dips below this, fetch more pictures
+    var MIN_QUEUE_SIZE = BACKLOG_SIZE + BATCH_SIZE + 1;
 
+
+    // queue is divided up with the front of the queue as the backlog, one spot
+    // for the currently displayed image, and then
+    // indexes BACKLOG_SIZE and after containing future images to show
+    // |backlog indexes|current image index|queue of next images|
     var queue = [];
+    // reuse <img> elements to save memory. Old images are added here after they are removed
+    // from the queue backlog
     var availableImages = [];
-    var currIndex = null;
-    var endIndex = null;
+
+    // preload queue with null values for backlog and 1 null value for current image
+    for (var i = 0; i < BACKLOG_SIZE + 1; i++) {
+        queue[i] = null;
+    }
 
     function enqueueImage(image, callback) {
+        // reuse an old img element if available, otherwise create a new one
         var $img = availableImages.length ? availableImages.shift() : $('<img/>');
-        //var url = images[getRandomInt(0, images.length)];
 
         $img.unbind();
         $img.error(function () {
@@ -36,16 +51,15 @@ function ImageLoader() {
     }
 
     // fills the queue of images to display. If a callback function is provided
-    // it will be passed on to the first
+    // it will be passed on to the first image as an onload function
     this.loadQueue = function (callback) {
-        getChannelImage(1, QUEUE_SIZE, function (data) {
+        getChannelImage(1, BATCH_SIZE, function (data) {
             for (var i = 0; i < data.length; i++) {
                 var image = data[i];
                 log(image);
                 // TODO: cleaner way to callback on first image load
                 if (callback && i === 0) {
                     enqueueImage(image, callback);
-                    log("first");
                 } else {
                     enqueueImage(image);
                 }
@@ -54,50 +68,46 @@ function ImageLoader() {
         });
     };
 
-    this.setImageList = function (imageList, callback) {
-        // TODO: check for no images?
-
-        // copy array of image urls
-        images.length = 0;
-        images = imageList.slice(0);
-
-        // clear any old pictures
-        queue.length = 0;
-
-        // Start loading queue
-        enqueueImage(callback);
-
-        // set callback for first image
-        $(queue[0]).load(callback);
-    };
-
     this.nextImage = function () {
-        if (queue.length < QUEUE_SIZE) {
+        // shift the queue of images down, and pop the oldest off the end. If it is not
+        // null save it to reuse later
+        var old_image = queue.shift();
+        if (old_image !== null) {
+            availableImages.push(old_image);
+        }
+
+        // fetch more images if the queue has gotten too low
+        if (queue.length < MIN_QUEUE_SIZE) {
             that.loadQueue();
         }
 
-        return queue.shift();
+        var nextImage = queue[BACKLOG_SIZE];
+
+        if (!nextImage) {
+            log("Warning: next image doesn't exist");
+        }
+
+        return nextImage;
     };
 
+    // returns the previous image if possible, and null otherwise
     this.prevImage = function () {
-
-        return null;
+        var prevImage = queue[BACKLOG_SIZE - 1];
+        if (prevImage !== null) {
+            // reverse the queue by adding a null value at the beginning
+            queue.unshift(null);
+            return prevImage;
+        } else {
+            return null;
+        }
     };
-
-    this.useImage = function (image) {
-        availableImages.push(image);
-    }
 }
 
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1) + min);
-}
 
-function ImageDisplayer(view, mobile, recycleFunction) {
+function ImageDisplayer(view, mobile) {
     var activeImage;
     var view = view;
     var mobile = mobile;
-    var recycleFunction = recycleFunction;
     var that = this;
 
     this.setImage = function (image) {
@@ -105,7 +115,6 @@ function ImageDisplayer(view, mobile, recycleFunction) {
         if (activeImage) {
             activeImage.fadeOut(function () {
                 $(this).remove();
-                recycleFunction($(this));
             });
         }
 
@@ -135,7 +144,6 @@ function ImageDisplayer(view, mobile, recycleFunction) {
     this.reset = function () {
         if (activeImage) {
             activeImage.remove();
-            recycleFunction(activeImage);
             activeImage = null;
         }
     };

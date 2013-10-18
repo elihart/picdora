@@ -98,7 +98,7 @@
     var $view = $('#viewer');
     $view.hide();
 
-    var displayer = new ImageDisplayer($view, isMobile, recycleImg);
+    var displayer = new ImageDisplayer($view, isMobile);
     var settings = new SettingsManager();
     var loader = new ImageLoader();
     var slideshow_int;
@@ -324,7 +324,7 @@
                 break;
             // left arrow
             case 37:
-
+                previousPicture();
                 break;
             // up arrow
             case 38:
@@ -345,10 +345,6 @@
                 changePicture();
                 break;
         }
-    }
-
-    function recycleImg(image) {
-        loader.useImage(image);
     }
 
     // shows the next picture in the queue

@@ -42,6 +42,10 @@ class Channel < ActiveRecord::Base
         end
       end
 
+      # TODO: Error when a user has seen all the images in the selected category and the channel model
+      # hasn't been updated to reflect that. Need to change image selection to use already seen images
+      # when necessary, and sometimes when not necessary
+
       image = Image.where(category_id: cat_id).where.not(id: seen).order("reddit_score DESC").first
 
       # Create a view to indicate that this image has been seen
