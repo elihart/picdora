@@ -67,6 +67,7 @@ class Channel < ActiveRecord::Base
 
   def update_model
     # Get all the categories to include in the model, than calculate weightings for them
+    # TODO: Come up with a better algorithm for creating the weightings model
 
     # non porn nsfw categories to exclude
     exclude = %w[morbidreality fiftyfifty imgoingtohellforthis]

@@ -1,0 +1,24 @@
+<h1 id="title">Picdora</h1>
+
+<p>Enter a username to create a new account or login to an existing account</p>
+<% flash.each do |name, msg| %>
+    <%= content_tag :div, msg, class: name %>
+<% end %>
+
+<%= form_tag("users/login", method: "post") do %>
+    <%= text_field_tag(:username, nil, placeholder: "username") %>
+    <%= submit_tag("Go") %>
+<% end %>
+
+<script>
+    // disable submit button when username field is empty
+    if ($('#username').val() == "")
+        $('input[type=submit]').attr('disabled', true);
+
+    $('#username').keyup(function () {
+        if ($('#username').val() != "")
+            $('input[type=submit]').attr('disabled', false);
+        else
+            $('input[type=submit]').attr('disabled', true);
+    });
+</script>

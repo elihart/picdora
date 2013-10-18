@@ -1,6 +1,6 @@
 Picdora::Application.routes.draw do
 
-  root 'images#index'
+  root 'users#index'
 
-  get ':controller(/:action(/:id))'
+  match ':controller(/:action(/:id))', via: :all
 end

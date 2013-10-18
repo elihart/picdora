@@ -1,0 +1,65 @@
+<div id="intro">
+  <h1>Welcome to Picdora <%= @user.name %>!</h1>
+
+  <h2>Controls:</h2>
+
+  <ul>
+    <li>Next Image - Right Arrow</li>
+    <li>Previous Image - Left Arrow</li>
+    <li>Like - Up Arrow</li>
+    <li>Dislike - Down Arrow</li>
+    <li>Fullscreen - f</li>
+  </ul>
+
+    <input type="submit" id="start_button" value="Ok!"/>
+
+</div>
+
+<!-- Work around styling to center loading div -->
+<div id="loading_container">
+  <div style="display: table-cell; vertical-align: middle;">
+    <div id="loading"></div>
+  </div>
+</div>
+
+<div id="viewer"></div>
+
+<div id="error_div"></div>
+
+<script>
+    var isMobile = jQuery.browser.mobile;
+    var $view = $('#viewer');
+
+
+    var displayer = new ImageDisplayer($view, isMobile);
+    var settings = new SettingsManager();
+    var loader = new ImageLoader();
+    var loadingWidget = new LoadingWidget($('#loading'));
+
+    PICDORA = {
+        BASE_URL: "<%=request.original_url%>"
+    };
+
+    // runs after document loads
+    $(function () {
+        // style buttons
+        $('input').button();
+
+        $view.hide();
+
+        // show intro on login
+        if (<%= !!flash[:login] %>) {
+            $('#start_button').click(function () {
+                start();
+            })
+        } else {
+            start();
+        }
+
+        function start() {
+            $('#intro').hide();
+           log("starting");
+        }
+    });
+
+</script>

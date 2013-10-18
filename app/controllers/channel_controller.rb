@@ -1,4 +1,14 @@
 class ChannelController < ApplicationController
+  #TODO: change naming to channels_controller not channel... whoops
+
+  def index
+    @user = User.find(session[:user_id])
+    if !@user
+      redirect_to "users/index" and return
+    end
+
+    @channel = Channel.where(user: @user).first
+  end
 
 
   def image_request
