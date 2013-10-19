@@ -1,6 +1,7 @@
-function ImageLoader() {
+function ImageLoader(channel_id) {
     var that = this;
     var images = [];
+    var channel_id = channel_id;
 
     // number of images to get per request. Bigger batches reduce image loading time for the user,
     // and reduce server bandwidth and cpu, however, it uses more of the user's memory and large batches
@@ -53,7 +54,7 @@ function ImageLoader() {
     // fills the queue of images to display. If a callback function is provided
     // it will be passed on to the first image as an onload function
     this.loadQueue = function (callback) {
-        getChannelImage(1, BATCH_SIZE, function (data) {
+        getChannelImage(channel_id, BATCH_SIZE, function (data) {
             for (var i = 0; i < data.length; i++) {
                 var image = data[i];
                 log(image);

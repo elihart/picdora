@@ -5,7 +5,7 @@
 function getChannelImage(id, count, callback) {
 
     $.ajax({
-        url: PICDORA.BASE_URL + "channel/image_request",
+        url: PICDORA.BASE_URL + "/channel/image_request",
         data: {"channel_id": id, "count": count},
         cache : false
     })
@@ -15,7 +15,7 @@ function getChannelImage(id, count, callback) {
 
 function recordLike(channel_id, image_id, liked, callback) {
     var request = $.ajax({
-        url: PICDORA.BASE_URL + "channel/record_like",
+        url: PICDORA.BASE_URL + "/channel/record_like",
         data: {"channel_id": channel_id, "image_id": image_id, "liked": liked},
         cache: false
     });
@@ -27,7 +27,7 @@ function recordLike(channel_id, image_id, liked, callback) {
 
 function saveImage(channel_id, image_id, saved, callback){
     var request = $.ajax({
-        url: PICDORA.BASE_URL + "channel/save_image",
+        url: PICDORA.BASE_URL + "/channel/save_image",
         data: {"channel_id": channel_id, "image_id": image_id, "saved": saved},
         cache: false
     });
@@ -39,7 +39,7 @@ function saveImage(channel_id, image_id, saved, callback){
 
 function reportImage(image_id, callback){
     var request = $.ajax({
-        url: PICDORA.BASE_URL + "channel/report_image",
+        url: PICDORA.BASE_URL + "/channel/report_image",
         data: {"image_id": image_id},
         cache: false
     });

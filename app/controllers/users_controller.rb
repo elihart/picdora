@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   def index
     if session[:user_id]
-      render "channel/index"
+      redirect_to "/channel/index" and return
     end
   end
 

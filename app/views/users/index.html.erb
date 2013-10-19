@@ -5,7 +5,7 @@
     <%= content_tag :div, msg, class: name %>
 <% end %>
 
-<%= form_tag("users/login", method: "post") do %>
+<%= form_tag(controller: :users, action: :login,  method: "post") do %>
     <%= text_field_tag(:username, nil, placeholder: "username") %>
     <%= submit_tag("Go") %>
 <% end %>
