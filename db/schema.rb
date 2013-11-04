@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131020193039) do
+ActiveRecord::Schema.define(version: 20131028075601) do
 
   create_table "albums", force: true do |t|
     t.boolean  "nsfw"
