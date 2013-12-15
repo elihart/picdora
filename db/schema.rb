@@ -11,20 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131028075601) do
+ActiveRecord::Schema.define(version: 20131215190925) do
 
   create_table "albums", force: true do |t|
-    t.boolean  "nsfw"
+    t.boolean  "nsfw",         default: false
     t.integer  "reddit_score"
     t.integer  "category_id"
     t.string   "url"
+    t.string   "imgurId"
+    t.boolean  "deleted",      default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
 
   create_table "categories", force: true do |t|
     t.string   "name"
-    t.boolean  "nsfw"
+    t.boolean  "nsfw",       default: false
+    t.boolean  "porn",       default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -42,10 +45,13 @@ ActiveRecord::Schema.define(version: 20131028075601) do
     t.integer  "reddit_score"
     t.string   "subreddit"
     t.boolean  "reported",     default: false
-    t.boolean  "nsfw"
-    t.boolean  "gif"
+    t.boolean  "nsfw",         default: false
+    t.boolean  "gif",          default: false
     t.integer  "category_id"
     t.integer  "album_id"
+    t.string   "imgurId"
+    t.boolean  "landscape"
+    t.boolean  "deleted",      default: false
     t.datetime "created_at"
     t.datetime "updated_at"
   end
