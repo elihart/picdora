@@ -8,7 +8,7 @@ class AssignCategories < ActiveRecord::Migration
       sampleSize = 100
       nsfwCount = 0
       Image.limit(sampleSize).where(subreddit: categoryName).each do |image|
-        if(image.nsfw)
+        if (image.nsfw)
           nsfwCount += 1
         end
       end
@@ -17,6 +17,12 @@ class AssignCategories < ActiveRecord::Migration
       # Create the category and update images with that category
       category = Category.create(name: categoryName, nsfw: isNFSW)
       Image.where(subreddit: categoryName).update_all(category_id: category.id)
+    end
+
+    # Update categories to add porn flag
+    non_porn_categories = %w[morbidreality fiftyfifty imgoingtohellforthis]
+    Category.nsfw.where.not(name: non_porn_categories).each do |cat|
+      cat.porn = true
     end
 
   end

@@ -4,4 +4,5 @@ class Category < ActiveRecord::Base
   has_many :albums
 
   scope :nsfw, -> { where(nsfw: true)}
+
 end

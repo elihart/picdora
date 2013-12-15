@@ -3,4 +3,6 @@ class Album < ActiveRecord::Base
   belongs_to :category
 
   scope :nsfw, -> { where(nsfw: true) }
+
+
 end

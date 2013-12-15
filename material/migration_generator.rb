@@ -22,7 +22,7 @@ File.open("../db/migrate/#{Time.now.utc.to_s.chomp("UTC").gsub(/[-: ]/, '') }_ad
       gif = url_object["gif"]
 
       # Add line to migration
-      if url.match("/a/") || url.match("/gallery/")
+      if url.match("/a/")
         migration.puts <<-MIGRATE_CODE
           Album.create(url: '#{url}', reddit_score: #{score}, nsfw: #{nsfw}, category_id: Category.where(name: '#{subreddit}').first.id)
         MIGRATE_CODE

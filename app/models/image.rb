@@ -6,5 +6,4 @@ class Image < ActiveRecord::Base
   # Default to not getting reported images or images in an album
   default_scope { where("album_id IS NULL AND reported IS FALSE") }
 
-  validates :url, uniqueness: true
 end
