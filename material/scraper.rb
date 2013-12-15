@@ -162,7 +162,7 @@ def getImgurIdsFromUrl(url)
   else
     # Look for a string of at least 4 "word" characters ([a-zA-Z0-9_]) at the end of the url. That should be the id.
     # The id should come after the last slash
-    pieces = url.split("/")
+    pieces = url.partition("imgur.com")[2].chomp("/new").chomp("/all").gsub(/\.jpg.*/, "").gsub(/\.gif.*/, "").gsub(/\.png.*/, "").split("/")
     if pieces.empty?
       puts "error getting id from url - #{url}"
     else

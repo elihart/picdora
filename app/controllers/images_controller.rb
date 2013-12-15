@@ -20,4 +20,9 @@ class ImagesController < ApplicationController
     end
     render json: images
   end
+
+  def random
+    image = Image.offset(rand(Image.count)).first
+    render json: image
+  end
 end

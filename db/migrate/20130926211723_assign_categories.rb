@@ -22,7 +22,7 @@ class AssignCategories < ActiveRecord::Migration
     # Update categories to add porn flag
     non_porn_categories = %w[morbidreality fiftyfifty imgoingtohellforthis]
     Category.nsfw.where.not(name: non_porn_categories).each do |cat|
-      cat.porn = true
+      cat.update(porn: true)
     end
 
   end
