@@ -17,10 +17,10 @@ test:
 production:
   adapter: postgresql
   encoding: unicode
-  database: picdora_production
+  database: rails
   pool: 5
   host: localhost
-  username: eli
-  password: asdfasdf
+  username: rails
+  password: y3IUAoEvkZ
 
 
