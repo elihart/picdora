@@ -6,7 +6,6 @@ gem 'rails', '4.0.0'
 gem 'pg'
 ruby '2.0.0'
 
-# Gem for deployment
 gem 'rails_12factor'
 
 # use thin for webserver
