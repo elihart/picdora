@@ -123,7 +123,7 @@ def getImgurIdsFromUrl(url)
   if url.match("imgur.com/a/")
     partition = url.partition("imgur.com/a/")
     tail = partition[2]
-    if tail.blank?
+    if tail.empty?
       puts "album imgurId error - url : #{url}"
     else
       match = tail.match(/\w{4,}/)
@@ -143,7 +143,6 @@ def getImgurIdsFromUrl(url)
 
   # Check for commas, if there are some there should be more than one id
   if url.match(",")
-    puts "Comma found, looking for multiple ids"
     url.split(",").each do |piece|
       # It could be a full imgur link, if so we can use recursion
       if piece.match("imgur.com")

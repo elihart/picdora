@@ -25,4 +25,14 @@ class ImagesController < ApplicationController
     image = Image.offset(rand(Image.count)).first
     render json: image
   end
+
+  def data
+    images = Image.where.not(imgurId: nil)
+    render json: images.as_json(only: [:imgurId, :reddit_score, :nsfw, :gif], include: {category: {only: :name}})
+  end
+
+  def album_data
+    albums = Album.where.not(imgurId: nil)
+    render json: albums.as_json(only: [:imgurId, :reddit_score, :nsfw], include: {category: {only: :name}})
+  end
 end

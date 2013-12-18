@@ -15,20 +15,21 @@ File.open("../db/migrate/#{Time.now.utc.to_s.chomp("UTC").gsub(/[-: ]/, '') }_ad
   File.open(fileName, 'r') do |file|
     while (line = file.gets)
       url_object = JSON.parse(line)
-      url = url_object["url"]
+      imgurId = url_object["imgurId"]
       score = url_object["score"]
       subreddit = url_object["subreddit"]
       nsfw = url_object["nsfw"]
       gif = url_object["gif"]
+      isAlbum = url_object["isAlbum"]
 
       # Add line to migration
-      if url.match("/a/")
+      if isAlbum
         migration.puts <<-MIGRATE_CODE
-          Album.create(url: '#{url}', reddit_score: #{score}, nsfw: #{nsfw}, category_id: Category.where(name: '#{subreddit}').first.id)
+          Album.new(imgurId: '#{imgurId}', reddit_score: #{score}, nsfw: #{nsfw}, category_id: Category.where(name: '#{subreddit}').first.id).save(validate: false)
         MIGRATE_CODE
       else
         migration.puts <<-MIGRATE_CODE
-          Image.create(url: '#{url}', reddit_score: #{score}, subreddit: '#{subreddit}', nsfw: #{nsfw}, gif: #{gif})
+          Image.new(imgurId: '#{imgurId}', reddit_score: #{score}, category_id: Category.where(name: '#{subreddit}').first.id, nsfw: #{nsfw}, gif: #{gif}).save(validate: false)
         MIGRATE_CODE
       end
     end
@@ -36,9 +37,6 @@ File.open("../db/migrate/#{Time.now.utc.to_s.chomp("UTC").gsub(/[-: ]/, '') }_ad
 
   # Add end tags
   migration.puts <<-END_CODE
-    Category.all.each do |cat|
-      Image.where(category_id: nil, subreddit: cat.name).update_all(category_id: cat.id)
-    end
     end
     end
   END_CODE
