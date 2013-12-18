@@ -15,7 +15,7 @@ test:
   password: asdfasdf
 
 production:
-  adapter: mysql2
+  adapter: pg
   encoding: unicode
   database: rails
   pool: 5
